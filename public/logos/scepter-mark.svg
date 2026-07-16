@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 212" fill="currentColor" role="img" aria-label="The Scepter">
+  <rect x="0" y="104" width="400" height="48" />
+  <rect x="0" y="164" width="400" height="48" />
+  <rect x="300" y="152" width="100" height="12" />
+  <rect x="0" y="0" width="31" height="110" rx="6" />
+  <rect x="43" y="0" width="45" height="110" rx="6" />
+  <rect x="100" y="0" width="54" height="110" rx="6" />
+  <rect x="166" y="0" width="68" height="110" rx="6" />
+  <rect x="246" y="0" width="54" height="110" rx="6" />
+  <rect x="312" y="0" width="45" height="110" rx="6" />
+  <rect x="369" y="0" width="31" height="110" rx="6" />
+</svg>
