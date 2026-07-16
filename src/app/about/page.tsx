@@ -24,7 +24,7 @@ export default function AboutPage() {
       <section className="bg-white px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-[7.33%]">
         <div className="mx-auto max-w-[900px] text-center">
           <SectionHeading
-            eyebrow="Welcome to our church"
+            eyebrow="Welcome to our ministry"
             title="Love and compassion"
           />
           <p className="mt-6 font-display text-base leading-6 text-navy/80">
@@ -97,7 +97,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-[1024px]">
           <SectionHeading
             eyebrow="Benefits"
-            title="The benefits of joining our church"
+            title="The benefits of joining our ministry"
           />
           <div className="mt-10 space-y-12 sm:mt-16 sm:space-y-16">
             {aboutBenefits.map((item) => (
@@ -135,7 +135,7 @@ export default function AboutPage() {
       <section className="bg-white px-4 pb-16 sm:px-6 sm:pb-24 md:px-10 lg:px-[7.33%]">
         <div className="mx-auto max-w-[1280px]">
           <SectionHeading
-            eyebrow="Church members"
+            eyebrow="Ministry team"
             title="Meet our inspirational team"
           />
           <div className="mt-8 grid gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">

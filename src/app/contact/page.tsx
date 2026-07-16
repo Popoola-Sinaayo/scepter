@@ -14,7 +14,7 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Contact"
-        title="Get in touch with our church"
+        title="Get in touch with our ministry"
         image="/images/contact-hero.jpg"
         overlay="dark"
       />

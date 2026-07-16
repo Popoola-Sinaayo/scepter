@@ -125,22 +125,22 @@ export const aboutBenefits = [
 export const teamMembers = [
   {
     name: "Kim Bowen",
-    role: "Pastor, Church",
+    role: "Pastor, Ministry",
     image: "/images/team-1.jpg",
   },
   {
     name: "Danielle Watkins",
-    role: "Pastor, Church",
+    role: "Pastor, Ministry",
     image: "/images/team-2.jpg",
   },
   {
     name: "Naomi Craig",
-    role: "Pastor, Church",
+    role: "Pastor, Ministry",
     image: "/images/team-3.jpg",
   },
   {
     name: "Santos Payne",
-    role: "Pastor, Church",
+    role: "Pastor, Ministry",
     image: "/images/team-4.jpg",
   },
 ] as const;

@@ -1,6 +1,6 @@
 # The Scepter
 
-Ministry website for **The Scepter** — built from the Client-First Church & Community Figma template and personalized with the ministry brand.
+Ministry website for **The Scepter** — a contemporary gospel ministry site built with Next.js and personalized for the brand.
 
 ## Stack
 
