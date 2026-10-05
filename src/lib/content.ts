@@ -5,8 +5,16 @@ export type Scripture = {
 
 export const images = {
   founderPortrait: {
+    src: "/images/ministry/founder-main.jpg",
+    alt: "Precious Alo, founder of The Scepter, in a burgundy double-breasted suit",
+  },
+  founderStudio: {
     src: "/images/ministry/founder-portrait.jpg",
-    alt: "Precious Alo, founder of The Scepter, smiling in a cream suit in front of a wall of album artwork",
+    alt: "Precious Alo smiling in a cream suit in front of a wall of album artwork",
+  },
+  communityCover: {
+    src: "/images/ministry/community-cover.jpg",
+    alt: "The Scepter community standing together on stage",
   },
   founderLectern: {
     src: "/images/ministry/founder-lectern.jpg",

@@ -47,15 +47,15 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative isolate flex min-h-[calc(100svh-4rem)] items-end overflow-hidden bg-ink sm:min-h-[calc(100svh-5rem)]">
         <Image
-          src={images.preaching.src}
-          alt={images.preaching.alt}
+          src={images.communityCover.src}
+          alt={images.communityCover.alt}
           fill
           priority
-          className="hero-media -z-10 object-cover object-[70%_center]"
+          className="hero-media -z-10 object-cover object-[center_40%]"
           sizes="100vw"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/75 to-ink/10" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink/90 via-transparent to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/90 via-ink/65 to-ink/35" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/40 to-ink/20" />
         <Container className="pb-16 pt-32 sm:pb-24">
           <p className="hero-enter hero-enter-delay-1 eyebrow text-cream/75">
             {site.legalName}
@@ -205,10 +205,10 @@ export default function HomePage() {
           <div className="mt-14 grid gap-4 sm:grid-cols-6 sm:gap-5">
             <Reveal className="relative aspect-[3/2] overflow-hidden sm:col-span-4 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]">
               <Image
-                src={images.communityLineup.src}
-                alt={images.communityLineup.alt}
+                src={images.communityCover.src}
+                alt={images.communityCover.alt}
                 fill
-                className="object-cover object-[center_35%] transition duration-700 hover:scale-105"
+                className="object-cover object-[center_40%] transition duration-700 hover:scale-105"
                 sizes="(max-width:640px) 100vw, 66vw"
               />
             </Reveal>
@@ -238,12 +238,15 @@ export default function HomePage() {
       <section className="bg-cream py-20 sm:py-28">
         <Container>
           <div className="grid items-center gap-12 md:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-            <Reveal variant="fade-left" className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden">
+            <Reveal
+              variant="fade-left"
+              className="relative mx-auto aspect-[2/3] w-full max-w-sm overflow-hidden bg-cream"
+            >
               <Image
                 src={images.founderPortrait.src}
                 alt={images.founderPortrait.alt}
                 fill
-                className="object-cover"
+                className="object-cover object-[center_12%]"
                 sizes="(max-width:768px) 100vw, 400px"
               />
             </Reveal>

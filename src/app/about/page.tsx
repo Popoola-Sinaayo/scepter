@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "About",
   description: `${site.legalName} is an institution built on formation, forming believers into their identity as kings and priests. Meet our founder, ${site.founder}.`,
   openGraph: {
-    images: [{ url: images.communityLineup.src, width: 1024, height: 682 }],
+    images: [{ url: images.communityCover.src, width: 1024, height: 682 }],
   },
 };
 
@@ -42,9 +42,9 @@ export default function AboutPage() {
         eyebrow="About The Scepter"
         title="An institution built on formation."
         description={preamble.body}
-        image={images.communityLineup.src}
-        imageAlt={images.communityLineup.alt}
-        imagePosition="object-[center_30%]"
+        image={images.communityCover.src}
+        imageAlt={images.communityCover.alt}
+        imagePosition="object-[center_40%]"
       />
 
       <section className="py-20 sm:py-28">
@@ -83,13 +83,17 @@ export default function AboutPage() {
       <section id="founder" className="scroll-mt-24 bg-cream py-20 sm:py-28">
         <Container>
           <div className="grid items-start gap-12 md:grid-cols-[0.85fr_1.15fr] lg:gap-20">
-            <Reveal variant="fade-left" className="relative aspect-[3/4] w-full overflow-hidden">
+            <Reveal
+              variant="fade-left"
+              className="relative aspect-[2/3] w-full overflow-hidden bg-paper"
+            >
               <Image
                 src={images.founderPortrait.src}
                 alt={images.founderPortrait.alt}
                 fill
-                className="object-cover"
+                className="object-cover object-[center_10%]"
                 sizes="(max-width:768px) 100vw, 45vw"
+                priority
               />
             </Reveal>
             <Reveal variant="fade-right" delayMs={120} className="md:pt-8">

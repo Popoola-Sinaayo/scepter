@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description: site.description,
     type: "website",
     siteName: site.legalName,
-    images: [{ url: "/images/ministry/community-lineup.jpg", width: 1024, height: 682 }],
+    images: [{ url: "/images/ministry/community-cover.jpg", width: 1024, height: 682 }],
   },
 };
 
