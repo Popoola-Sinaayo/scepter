@@ -1,207 +1,186 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { CTABand } from "@/components/CTABand";
+import { Container } from "@/components/Container";
 import { PageHero } from "@/components/PageHero";
+import { Reveal } from "@/components/Reveal";
+import { ScriptureQuote } from "@/components/ScriptureQuote";
 import { SectionHeading } from "@/components/SectionHeading";
-import { aboutBenefits, teamMembers } from "@/lib/content";
+import { StatementBand } from "@/components/StatementBand";
+import { anchors, founder, images, institution, preamble, witness } from "@/lib/content";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "About Us",
-  description: `Learn about ${site.name} — our mission, vision, and the people who lead us.`,
+  title: "About",
+  description: `${site.legalName} is an institution built on formation, forming believers into their identity as kings and priests. Meet our founder, ${site.founder}.`,
+  openGraph: {
+    images: [{ url: images.communityLineup.src, width: 1024, height: 682 }],
+  },
 };
 
+const pillars = [
+  {
+    title: "Our mission",
+    body: "To form believers into their identity and function as kings and priests, through deep doctrine, priestly disciplines and intentional discipleship.",
+  },
+  {
+    title: "Our vision",
+    body: "A generation formed at the altar and deployed into every sphere of civilization as witnesses, shaping nations through the people we form.",
+  },
+  {
+    title: "Our posture",
+    body: "Formation before function. Witness, not dominion. Patience over trends. We go deep before we go wide.",
+  },
+] as const;
+
 export default function AboutPage() {
+  const royalPriesthood = anchors[2].scripture;
+
   return (
     <>
       <PageHero
-        eyebrow="About us"
-        title="Serving the world around us"
-        image="/images/about-hero.jpg"
-        overlay="light"
-        titleClassName="text-navy"
+        eyebrow="About The Scepter"
+        title="An institution built on formation."
+        description={preamble.body}
+        image={images.communityLineup.src}
+        imageAlt={images.communityLineup.alt}
+        imagePosition="object-[center_30%]"
       />
 
-      <section className="bg-white px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-[7.33%]">
-        <div className="mx-auto max-w-[900px] text-center">
-          <SectionHeading
-            eyebrow="Welcome to our ministry"
-            title="Love and compassion"
-          />
-          <p className="mt-6 font-display text-base leading-6 text-navy/80">
-            The Scepter exists to love God and neighbor with sincerity — building
-            a community where worship, discipleship, and compassion shape everyday
-            life.
-          </p>
-        </div>
+      <section className="py-20 sm:py-28">
+        <Container>
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+            <Reveal>
+              <p className="eyebrow text-burgundy">Who we are</p>
+              <h2 className="mt-4 font-serif text-4xl font-semibold leading-[1.08] tracking-tight text-ink sm:text-5xl">
+                {preamble.lead}
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-ink/75">
+                The Scepter Christian Ministries exists to close the gap between
+                who Scripture says believers are and how they actually live. We
+                do not invent an identity for believers. We form them into the
+                one Scripture has already declared.
+              </p>
+            </Reveal>
+            <Reveal delayMs={120} className="lg:pt-14">
+              <ScriptureQuote scripture={royalPriesthood} size="lg" />
+            </Reveal>
+          </div>
 
-        <div className="mx-auto mt-10 flex max-w-[1100px] flex-col items-center justify-center gap-4 sm:mt-14 sm:gap-5 md:flex-row md:items-end">
-          <div className="relative h-[240px] w-full overflow-hidden rounded-[24px] sm:h-[300px] sm:rounded-[30px] md:h-[384px] md:w-[293px]">
-            <Image
-              src="/images/gallery-left.jpg"
-              alt=""
-              fill
-              className="object-cover"
-              sizes="(max-width:768px) 100vw, 293px"
-            />
-          </div>
-          <div className="relative h-[280px] w-full overflow-hidden rounded-[24px] sm:h-[360px] sm:rounded-[32px] md:h-[512px] md:w-[390px]">
-            <Image
-              src="/images/gallery-center.jpg"
-              alt=""
-              fill
-              className="object-cover"
-              sizes="(max-width:768px) 100vw, 390px"
-            />
-          </div>
-          <div className="relative h-[240px] w-full overflow-hidden rounded-[24px] sm:h-[300px] sm:rounded-[30px] md:h-[384px] md:w-[293px]">
-            <Image
-              src="/images/gallery-right.jpg"
-              alt=""
-              fill
-              className="object-cover"
-              sizes="(max-width:768px) 100vw, 293px"
-            />
-          </div>
-        </div>
-
-        <div className="mx-auto mt-14 grid max-w-[1024px] gap-10 sm:mt-20 sm:gap-12 md:grid-cols-2 md:gap-16">
-          <div>
-            <p className="font-display text-sm uppercase text-navy sm:text-base">
-              Our mission & vision
-            </p>
-            <h3 className="mt-3 font-display text-2xl font-bold uppercase leading-tight tracking-tight text-navy sm:text-3xl">
-              Striving for a better tomorrow
-            </h3>
-            <p className="mt-4 font-display text-base leading-6 text-navy/80">
-              We pursue a future where families, cities, and nations are renewed
-              by the hope of Christ — starting with faithful presence in our local
-              community.
-            </p>
-          </div>
-          <div>
-            <p className="font-display text-sm uppercase text-navy sm:text-base">
-              What we do
-            </p>
-            <h3 className="mt-3 font-display text-2xl font-bold uppercase leading-tight tracking-tight text-navy sm:text-3xl">
-              Bringing peace and joy to the world
-            </h3>
-            <p className="mt-4 font-display text-base leading-6 text-navy/80">
-              Through worship gatherings, teaching, outreach, and pastoral care,
-              we invite people into a life of peace, purpose, and joyful service.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white px-4 pb-14 sm:px-6 sm:pb-20 md:px-10 lg:px-[7.33%]">
-        <div className="mx-auto max-w-[1024px]">
-          <SectionHeading
-            eyebrow="Benefits"
-            title="The benefits of joining our ministry"
-          />
-          <div className="mt-10 space-y-12 sm:mt-16 sm:space-y-16">
-            {aboutBenefits.map((item) => (
-              <div
-                key={item.title}
-                className="grid items-center gap-6 sm:gap-10 md:grid-cols-2"
-              >
-                <div
-                  className={`relative h-[220px] overflow-hidden sm:h-[280px] md:h-[320px] ${
-                    item.imageLeft ? "md:order-1" : "md:order-2"
-                  }`}
-                >
-                  <Image
-                    src={item.image}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="(max-width:768px) 100vw, 500px"
-                  />
-                </div>
-                <div className={item.imageLeft ? "md:order-2" : "md:order-1"}>
-                  <h3 className="font-display text-2xl font-bold uppercase leading-tight tracking-tight text-navy sm:text-3xl">
-                    {item.title}
-                  </h3>
-                  <p className="mt-4 max-w-[480px] font-display text-base leading-6 text-navy/80">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white px-4 pb-16 sm:px-6 sm:pb-24 md:px-10 lg:px-[7.33%]">
-        <div className="mx-auto max-w-[1280px]">
-          <SectionHeading
-            eyebrow="Ministry team"
-            title="Meet our inspirational team"
-          />
-          <div className="mt-8 grid gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-            {teamMembers.map((member) => (
-              <article
-                key={member.name}
-                className="flex flex-col items-center bg-grey px-5 py-10 text-center sm:px-6 sm:py-12"
-              >
-                <div className="relative size-[128px] overflow-hidden rounded-full border-8 border-white sm:size-[152px]">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                    sizes="152px"
-                  />
-                </div>
-                <h3 className="mt-6 font-display text-xl font-bold uppercase tracking-tight text-navy sm:mt-8 sm:text-2xl">
-                  {member.name}
+          <div className="mt-20 grid gap-10 border-t border-ink/10 pt-14 md:grid-cols-3">
+            {pillars.map((pillar, index) => (
+              <Reveal key={pillar.title} delayMs={index * 100}>
+                <h3 className="font-serif text-3xl font-semibold text-ink">
+                  {pillar.title}
                 </h3>
-                <p className="mt-2 font-display text-base text-navy/70">
-                  {member.role}
-                </p>
-                <div className="mt-5 flex items-center gap-5">
-                  <a
-                    href={site.social.facebook}
-                    aria-label="Facebook"
-                    className="relative size-4"
-                  >
-                    <Image
-                      src="/icons/facebook-dark.svg"
-                      alt=""
-                      fill
-                      className="object-contain"
-                    />
-                  </a>
-                  <a
-                    href={site.social.twitter}
-                    aria-label="Twitter"
-                    className="relative size-4"
-                  >
-                    <Image
-                      src="/icons/twitter-dark.svg"
-                      alt=""
-                      fill
-                      className="object-contain"
-                    />
-                  </a>
-                  <a
-                    href={site.social.linkedin}
-                    aria-label="LinkedIn"
-                    className="relative size-4"
-                  >
-                    <Image
-                      src="/icons/linkedin-dark.svg"
-                      alt=""
-                      fill
-                      className="object-contain"
-                    />
-                  </a>
-                </div>
-              </article>
+                <p className="mt-4 text-base leading-7 text-ink/70">{pillar.body}</p>
+              </Reveal>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
+
+      <section id="founder" className="scroll-mt-24 bg-cream py-20 sm:py-28">
+        <Container>
+          <div className="grid items-start gap-12 md:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+            <Reveal variant="fade-left" className="relative aspect-[3/4] w-full overflow-hidden">
+              <Image
+                src={images.founderPortrait.src}
+                alt={images.founderPortrait.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width:768px) 100vw, 45vw"
+              />
+            </Reveal>
+            <Reveal variant="fade-right" delayMs={120} className="md:pt-8">
+              <p className="eyebrow text-burgundy">The founder</p>
+              <h2 className="mt-4 font-serif text-5xl font-semibold leading-none tracking-tight text-ink sm:text-6xl">
+                {founder.name}
+              </h2>
+              <p className="eyebrow mt-4 text-ink/50">
+                {founder.role}, {site.legalName}
+              </p>
+              <div className="mt-8 space-y-5 text-lg leading-8 text-ink/75">
+                {founder.bio.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+              <p className="mt-10 border-l-2 border-burgundy pl-5 font-serif text-2xl italic leading-snug text-ink sm:text-3xl">
+                &ldquo;{founder.quote}&rdquo;
+              </p>
+            </Reveal>
+          </div>
+
+          <div className="mt-16 grid gap-4 sm:grid-cols-3 sm:gap-5">
+            <Reveal className="relative aspect-[3/4] overflow-hidden">
+              <Image
+                src={images.preachingGesture.src}
+                alt={images.preachingGesture.alt}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width:640px) 100vw, 33vw"
+              />
+            </Reveal>
+            <Reveal delayMs={100} className="relative aspect-[3/4] overflow-hidden">
+              <Image
+                src={images.founderSeated.src}
+                alt={images.founderSeated.alt}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width:640px) 100vw, 33vw"
+              />
+            </Reveal>
+            <Reveal delayMs={200} className="relative aspect-[3/4] overflow-hidden">
+              <Image
+                src={images.founderLectern.src}
+                alt={images.founderLectern.alt}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width:640px) 100vw, 33vw"
+              />
+            </Reveal>
+          </div>
+        </Container>
+      </section>
+
+      <StatementBand eyebrow="A critical clarification" statement={witness.title} tone="ink">
+        <p>{witness.body[0]}</p>
+      </StatementBand>
+
+      <section className="py-20 sm:py-28">
+        <Container>
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+            <Reveal>
+              <SectionHeading
+                align="left"
+                eyebrow={institution.lead}
+                title={institution.title}
+                description={institution.body}
+              />
+              <p className="mt-8 font-serif text-2xl italic text-burgundy sm:text-3xl">
+                {institution.maxim}
+              </p>
+            </Reveal>
+            <Reveal delayMs={120} className="relative aspect-[3/2] overflow-hidden">
+              <Image
+                src={images.groupStage.src}
+                alt={images.groupStage.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width:1024px) 100vw, 50vw"
+              />
+            </Reveal>
+          </div>
+        </Container>
+      </section>
+
+      <CTABand
+        eyebrow="Walk with us"
+        title="Let the building begin."
+        body="Explore the doctrine that shapes everything we do, or reach out to the team."
+        primary={{ href: "/doctrine", label: "Read our doctrine" }}
+        secondary={{ href: "/contact", label: "Contact us" }}
+      />
     </>
   );
 }

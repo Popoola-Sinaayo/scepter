@@ -1,116 +1,77 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Logo } from "./Logo";
-import { Button } from "./Button";
-import { quickLinks, site } from "@/lib/site";
+import { SocialIcon } from "./SocialIcon";
+import { SubscribeForm } from "./SubscribeForm";
+import { quickLinks, site, socialLinks } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="bg-navy text-white">
-      <div className="mx-auto grid w-full max-w-[1500px] gap-10 px-4 py-12 sm:gap-12 sm:px-6 sm:py-16 md:px-10 lg:grid-cols-[1.2fr_0.8fr_0.7fr_1.6fr] lg:gap-10 lg:px-[7.33%] lg:py-16">
+    <footer className="bg-ink text-cream">
+      <div className="mx-auto grid w-full max-w-7xl gap-12 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1.3fr_0.7fr_1.4fr] lg:gap-16 lg:px-12">
         <div>
-          <Logo variant="accent" />
-          <p className="mt-4 font-display text-xs uppercase text-white/80">
-            © Copyright The Scepter {site.copyrightYear}
+          <Logo variant="light" />
+          <p className="mt-6 max-w-sm font-serif text-xl italic leading-snug text-cream/80">
+            &ldquo;A chosen generation, a royal priesthood, a holy nation.&rdquo;
           </p>
-          <div className="mt-6 space-y-2 font-display text-xs uppercase text-white/90">
-            <p>{site.phone}</p>
-            <p>{site.address}</p>
+          <p className="eyebrow mt-2 text-cream/50">1 Peter 2:9</p>
+          <div className="mt-8 space-y-2 text-sm text-cream/75">
             <a
               href={`mailto:${site.email}`}
-              className="block break-all transition hover:text-primary"
+              className="block break-all transition hover:text-cream"
             >
               {site.email}
             </a>
+            {site.phone ? <p>{site.phone}</p> : null}
+            {site.location ? <p>{site.location}</p> : null}
           </div>
+          {socialLinks.length > 0 ? (
+            <div className="mt-6 flex items-center gap-4">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.key}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                  className="text-cream/70 transition hover:text-cream"
+                >
+                  <SocialIcon name={link.key} />
+                </a>
+              ))}
+            </div>
+          ) : null}
         </div>
 
-        <div className="contents max-sm:grid max-sm:grid-cols-2 max-sm:gap-8">
-          <div>
-            <p className="font-display text-base text-primary">Quicklinks</p>
-            <ul className="mt-4 space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="font-display text-xs uppercase text-white/80 transition hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <p className="font-display text-base text-primary">Connect</p>
-            <div className="mt-4 flex items-center gap-4">
-              <a
-                href={site.social.facebook}
-                aria-label="Facebook"
-                className="relative size-5 overflow-hidden sm:size-4"
-              >
-                <Image
-                  src="/icons/facebook.svg"
-                  alt=""
-                  fill
-                  className="object-contain"
-                />
-              </a>
-              <a
-                href={site.social.twitter}
-                aria-label="Twitter"
-                className="relative size-5 overflow-hidden sm:size-4"
-              >
-                <Image
-                  src="/icons/twitter.svg"
-                  alt=""
-                  fill
-                  className="object-contain"
-                />
-              </a>
-              <a
-                href={site.social.linkedin}
-                aria-label="LinkedIn"
-                className="relative size-5 overflow-hidden sm:size-4"
-              >
-                <Image
-                  src="/icons/linkedin.svg"
-                  alt=""
-                  fill
-                  className="object-contain"
-                />
-              </a>
-            </div>
-          </div>
+        <div>
+          <p className="eyebrow text-cream/50">Explore</p>
+          <ul className="mt-5 space-y-3">
+            {quickLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-sm uppercase tracking-[0.12em] text-cream/80 transition hover:text-cream"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="min-w-0">
-          <h2 className="max-w-[360px] font-display text-xl font-bold uppercase leading-tight tracking-tight text-white sm:text-2xl md:text-[32px] md:leading-[44px]">
-            Subscribe to get latest updates and news
+          <p className="eyebrow text-cream/50">Stay connected</p>
+          <h2 className="mt-4 max-w-md font-serif text-3xl font-semibold leading-tight sm:text-4xl">
+            Receive teachings and gathering updates.
           </h2>
-          <form
-            className="mt-6 flex flex-col gap-3 sm:relative sm:block"
-            action="#"
-            method="post"
-          >
-            <label htmlFor="footer-email" className="sr-only">
-              Email address
-            </label>
-            <input
-              id="footer-email"
-              type="email"
-              name="email"
-              placeholder="Yourmail@gmail.com"
-              className="h-14 w-full rounded-xl border border-white/15 bg-transparent px-5 font-display text-base text-white placeholder:text-white/80 outline-none focus:border-primary sm:h-[64px] sm:pr-40"
-            />
-            <Button
-              type="submit"
-              className="h-14 w-full !rounded-xl sm:absolute sm:right-0 sm:top-0 sm:h-[64px] sm:w-auto"
-            >
-              Subscribe
-            </Button>
-          </form>
+          <SubscribeForm />
+        </div>
+      </div>
+      <div className="border-t border-cream/10">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-5 py-6 text-xs uppercase tracking-[0.12em] text-cream/50 sm:flex-row sm:justify-between sm:px-8 lg:px-12">
+          <p>
+            © {site.copyrightYear} {site.legalName}
+          </p>
+          <p>Building for centuries.</p>
         </div>
       </div>
     </footer>

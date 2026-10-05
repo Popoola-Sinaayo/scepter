@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 type LogoProps = {
-  variant?: "light" | "dark" | "accent";
+  variant?: "light" | "dark";
   className?: string;
   showWordmark?: boolean;
 };
@@ -10,13 +10,11 @@ type LogoProps = {
 const srcMap = {
   light: "/logos/scepter-mark-cream.png",
   dark: "/logos/scepter-mark-navy.png",
-  accent: "/logos/scepter-mark-cream.png",
 } as const;
 
 const wordmarkMap = {
-  light: "text-[#f9f1d6]",
-  dark: "text-[#333e50]",
-  accent: "text-primary",
+  light: "text-cream",
+  dark: "text-navy",
 } as const;
 
 export function Logo({
@@ -27,18 +25,18 @@ export function Logo({
   return (
     <Link
       href="/"
-      className={`inline-flex min-w-0 items-center gap-2 sm:gap-3 ${wordmarkMap[variant]} ${className}`}
+      className={`inline-flex min-w-0 items-center gap-2.5 sm:gap-3 ${wordmarkMap[variant]} ${className}`}
       aria-label="The Scepter home"
     >
       <Image
         src={srcMap[variant]}
         alt=""
-        width={60}
-        height={33}
+        width={416}
+        height={230}
         className="h-7 w-auto shrink-0 object-contain sm:h-8"
       />
       {showWordmark ? (
-        <span className="truncate font-display text-base font-bold uppercase tracking-wide leading-none sm:text-lg">
+        <span className="truncate font-display text-base font-bold uppercase leading-none tracking-[0.18em] sm:text-lg">
           The Scepter
         </span>
       ) : null}

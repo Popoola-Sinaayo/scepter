@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto_Condensed } from "next/font/google";
+import { Cormorant_Garamond, Roboto_Condensed } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { site } from "@/lib/site";
@@ -12,20 +12,27 @@ const robotoCondensed = Roboto_Condensed({
   display: "swap",
 });
 
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: `${site.name} | ${site.tagline}`,
     template: `%s | ${site.name}`,
   },
-  description: `${site.name} — ${site.tagline}. A faith community rooted in love, worship, and serving the world around us.`,
-  metadataBase: new URL("https://thescepterglobal.com"),
+  description: site.description,
+  metadataBase: new URL(site.url),
   openGraph: {
     title: site.name,
-    description: `${site.tagline}. Worship, grow, and serve with ${site.name}.`,
+    description: site.description,
     type: "website",
-  },
-  icons: {
-    icon: "/logos/logo-cream-on-navy.png",
+    siteName: site.legalName,
+    images: [{ url: "/images/ministry/community-lineup.jpg", width: 1024, height: 682 }],
   },
 };
 
@@ -35,8 +42,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${robotoCondensed.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-white font-display text-navy">
+    <html
+      lang="en"
+      className={`${robotoCondensed.variable} ${cormorant.variable} h-full antialiased`}
+    >
+      <body className="flex min-h-full flex-col bg-paper font-display text-ink">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

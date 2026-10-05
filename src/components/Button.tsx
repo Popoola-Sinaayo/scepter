@@ -1,14 +1,16 @@
 import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
-type ButtonVariant = "primary" | "secondary" | "dark";
+type ButtonVariant = "primary" | "outline" | "outline-light" | "light" | "dark";
 
 const variants: Record<ButtonVariant, string> = {
-  primary:
-    "bg-primary text-ink hover:bg-primary-hover shadow-sm",
-  secondary:
-    "bg-transparent text-primary border border-primary/40 hover:bg-primary/10",
-  dark: "bg-navy text-primary hover:bg-ink",
+  primary: "bg-burgundy text-cream hover:bg-burgundy-deep shadow-sm",
+  outline:
+    "border border-burgundy/50 text-burgundy hover:border-burgundy hover:bg-burgundy hover:text-cream",
+  "outline-light":
+    "border border-cream/50 text-cream hover:border-cream hover:bg-cream hover:text-ink",
+  light: "bg-cream text-ink hover:bg-white",
+  dark: "bg-ink text-cream hover:bg-navy-deep",
 };
 
 type ButtonProps = {
@@ -23,9 +25,10 @@ export function Button({
   variant = "primary",
   href,
   className = "",
+  type = "button",
   ...props
 }: ButtonProps) {
-  const classes = `inline-flex items-center justify-center rounded-xl px-8 py-4 font-display text-sm uppercase tracking-wide transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:px-10 sm:py-5 sm:text-base ${variants[variant]} ${className}`;
+  const classes = `inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.14em] transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 disabled:pointer-events-none disabled:opacity-60 sm:px-9 sm:py-4 ${variants[variant]} ${className}`;
 
   if (href) {
     return (
@@ -36,7 +39,7 @@ export function Button({
   }
 
   return (
-    <button type="button" className={classes} {...props}>
+    <button type={type} className={classes} {...props}>
       {children}
     </button>
   );

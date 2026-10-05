@@ -1,35 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #161722;
-  --navy: #161722;
-  --ink: #1c1d28;
-  --black: #0d0d0d;
-  --primary: #ffd2a4;
-  --primary-hover: #ffc287;
-  --cream: #fff5eb;
-  --grey: #f5f2f0;
-  --burgundy: #a32e2e;
-  --scepter-cream: #f9f1d6;
-  --scepter-navy: #333e50;
+  --background: #fdf8ec;
+  --foreground: #1a1d26;
+  --ink: #14161c;
+  --navy: #333e50;
+  --navy-deep: #232b38;
+  --burgundy: #9e2b2b;
+  --burgundy-deep: #7d2121;
+  --cream: #fcf0d6;
+  --paper: #fdf8ec;
+  --primary: var(--burgundy);
+  --primary-hover: var(--burgundy-deep);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-navy: var(--navy);
   --color-ink: var(--ink);
-  --color-black: var(--black);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-burgundy: var(--burgundy);
+  --color-burgundy-deep: var(--burgundy-deep);
+  --color-cream: var(--cream);
+  --color-paper: var(--paper);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
-  --color-cream: var(--cream);
-  --color-grey: var(--grey);
-  --color-burgundy: var(--burgundy);
-  --color-scepter-cream: var(--scepter-cream);
-  --color-scepter-navy: var(--scepter-navy);
   --font-display: var(--font-roboto-condensed);
   --font-sans: var(--font-roboto-condensed);
+  --font-serif: var(--font-cormorant);
 }
 
 html {
@@ -45,8 +44,21 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--primary) 70%, white);
-  color: var(--ink);
+  background: var(--burgundy);
+  color: var(--cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--burgundy);
+  outline-offset: 3px;
+}
+
+.eyebrow {
+  font-family: var(--font-roboto-condensed), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
 /* —— Motion —— */
@@ -148,4 +160,3 @@ body {
 .hero-enter-delay-4 {
   animation-delay: 0.6s;
 }
-

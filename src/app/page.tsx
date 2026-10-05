@@ -1,357 +1,308 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AnchorCard } from "@/components/AnchorCard";
 import { Button } from "@/components/Button";
+import { CTABand } from "@/components/CTABand";
+import { Container } from "@/components/Container";
+import { DimensionCard } from "@/components/DimensionCard";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
+import { StatementBand } from "@/components/StatementBand";
 import {
-  benefitTiles,
-  blogPosts,
-  featuredEvent,
-  homeCards,
+  anchors,
+  dimensions,
+  founder,
+  images,
+  preamble,
+  priestlyDisciplines,
+  spheres,
+  thesis,
+  vision,
 } from "@/lib/content";
-import { site } from "@/lib/site";
+import { site, socialLinks } from "@/lib/site";
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ReligiousOrganization",
+  name: site.legalName,
+  alternateName: site.name,
+  url: site.url,
+  logo: `${site.url}/logos/logo-cream-on-red.png`,
+  email: site.email,
+  description: site.description,
+  slogan: site.tagline,
+  founder: { "@type": "Person", name: site.founder },
+  sameAs: socialLinks.map((link) => link.href),
+};
 
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       {/* Hero */}
-      <section className="relative min-h-[70vh] overflow-hidden md:min-h-[820px]">
+      <section className="relative isolate flex min-h-[calc(100svh-4rem)] items-end overflow-hidden bg-ink sm:min-h-[calc(100svh-5rem)]">
         <Image
-          src="/images/hero-home-worship.jpg"
-          alt="Worshippers with hands lifted in praise"
+          src={images.preaching.src}
+          alt={images.preaching.alt}
           fill
           priority
-          className="hero-media object-cover object-center"
+          className="hero-media -z-10 object-cover object-[70%_center]"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-black/25" />
-        <div className="relative mx-auto flex min-h-[70vh] w-full max-w-[1500px] flex-col justify-center px-4 py-16 sm:px-6 sm:py-24 md:min-h-[820px] md:px-10 lg:px-[7.33%]">
-          <p className="hero-enter hero-enter-delay-1 font-display text-sm uppercase tracking-wide text-white sm:text-base">
-            {site.name}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/75 to-ink/10" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink/90 via-transparent to-transparent" />
+        <Container className="pb-16 pt-32 sm:pb-24">
+          <p className="hero-enter hero-enter-delay-1 eyebrow text-cream/75">
+            {site.legalName}
           </p>
-          <h1 className="hero-enter hero-enter-delay-2 mt-3 max-w-[700px] font-display text-3xl font-bold uppercase leading-tight tracking-tight text-white sm:mt-4 sm:text-4xl md:text-6xl md:leading-[74px]">
-            {site.tagline}
+          <h1 className="hero-enter hero-enter-delay-2 mt-5 max-w-3xl font-serif text-6xl font-semibold leading-[0.95] tracking-tight text-cream sm:text-7xl md:text-8xl">
+            Formed to reign.
+            <br />
+            <em className="font-medium text-cream/85">Sent to witness.</em>
           </h1>
-          <div className="hero-enter hero-enter-delay-3 mt-8 sm:mt-10">
-            <Button href="/about">Learn more</Button>
-          </div>
-          <p className="hero-enter hero-enter-delay-4 mt-6 max-w-md font-display text-sm leading-6 text-white/85 sm:mt-8 sm:text-base">
-            Become a part of our community — worship, grow, and serve with us.
+          <p className="hero-enter hero-enter-delay-3 mt-7 max-w-xl text-base leading-7 text-cream/80 sm:text-lg">
+            We form believers into their identity and function as kings and
+            priests: shaped at the altar, deployed into every sphere of life as
+            witnesses of Christ.
           </p>
-        </div>
+          <div className="hero-enter hero-enter-delay-4 mt-10 flex flex-col gap-4 sm:flex-row">
+            <Button href="/doctrine">Our doctrine</Button>
+            <Button href="/contact" variant="outline-light">
+              Make an enquiry
+            </Button>
+          </div>
+        </Container>
       </section>
 
-      {/* Relevant cards */}
-      <section className="bg-white px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-[7.33%]">
-        <div className="mx-auto max-w-[1280px]">
-          <Reveal>
-            <SectionHeading title="A ministry that's relevant" />
-          </Reveal>
-          <div className="mt-8 grid items-stretch gap-5 sm:mt-12 sm:gap-6 md:grid-cols-3">
-            {homeCards.map((card, index) => (
-              <Reveal
-                key={card.title}
-                delayMs={index * 100}
-                variant="fade-up"
-                className="h-full"
+      {/* Preamble */}
+      <section className="py-20 sm:py-28">
+        <Container>
+          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
+            <Reveal>
+              <p className="eyebrow text-burgundy">Why The Scepter exists</p>
+              <h2 className="mt-4 font-serif text-4xl font-semibold leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl">
+                {preamble.lead}
+              </h2>
+            </Reveal>
+            <Reveal delayMs={120} className="lg:pt-10">
+              <p className="text-lg leading-8 text-ink/75">{preamble.body}</p>
+              <p className="mt-8 border-l-2 border-burgundy pl-5 font-serif text-2xl italic leading-snug text-ink">
+                {preamble.maxim}
+              </p>
+              <Link
+                href="/about"
+                className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-burgundy hover:text-burgundy-deep"
               >
-                <Link
-                  href={card.href}
-                  className="group relative flex h-full flex-col overflow-hidden bg-cream transition duration-300 hover:-translate-y-1.5 hover:shadow-lg"
-                >
-                  <div className="relative h-[160px] shrink-0 bg-primary/80 sm:h-[180px]">
-                    {card.shape ? (
-                      <Image
-                        src={card.shape}
-                        alt=""
-                        width={120}
-                        height={120}
-                        className="absolute right-4 top-4 opacity-40 transition duration-500 group-hover:rotate-6 group-hover:scale-110"
-                      />
-                    ) : null}
-                    <div className="absolute left-6 top-8 size-12 overflow-hidden transition duration-300 group-hover:scale-110 sm:left-8 sm:top-10">
-                      <Image
-                        src={card.icon}
-                        alt=""
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-1 flex-col p-6 sm:p-8">
-                    <h3 className="font-display text-xl font-bold uppercase tracking-tight text-navy sm:text-2xl">
-                      {card.title}
-                    </h3>
-                    <p className="mt-3 flex-1 font-display text-base leading-6 text-navy/80">
-                      {card.description}
-                    </p>
-                  </div>
-                </Link>
+                About the ministry <span aria-hidden>&rarr;</span>
+              </Link>
+            </Reveal>
+          </div>
+        </Container>
+      </section>
+
+      {/* Thesis */}
+      <StatementBand eyebrow="The central thesis" statement={thesis.title}>
+        <p>{thesis.summary}</p>
+      </StatementBand>
+
+      <section className="bg-cream py-16 sm:py-20">
+        <Container>
+          <Reveal>
+            <p className="eyebrow text-center text-burgundy">
+              The priestly disciplines
+            </p>
+          </Reveal>
+          <div className="mt-10 grid gap-px overflow-hidden border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-5">
+            {priestlyDisciplines.map((discipline, index) => (
+              <Reveal
+                key={discipline.title}
+                delayMs={index * 80}
+                className="bg-cream p-6 sm:p-7"
+              >
+                <h3 className="font-serif text-2xl font-semibold text-ink">
+                  {discipline.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-ink/70">
+                  {discipline.description}
+                </p>
               </Reveal>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* Love and compassion */}
-      <section className="bg-white px-4 pb-16 sm:px-6 sm:pb-24 md:px-10 lg:px-[7.33%]">
-        <Reveal className="mx-auto max-w-[900px] text-center">
-          <SectionHeading
-            eyebrow="Welcome to our ministry"
-            title="Love and compassion"
-          />
-          <p className="mt-6 font-display text-base leading-6 text-navy/80">
-            At The Scepter we gather to worship, grow, and care for one another —
-            creating a home where every person can encounter hope and belonging.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <Button href="/about">Read more</Button>
-          </div>
-        </Reveal>
-
-        <div className="mx-auto mt-10 flex max-w-[1100px] flex-col items-center justify-center gap-4 sm:mt-14 sm:gap-5 md:flex-row md:items-end">
-          <Reveal
-            delayMs={0}
-            variant="fade-up"
-            className="relative h-[240px] w-full overflow-hidden rounded-[24px] sm:h-[300px] sm:rounded-[30px] md:h-[384px] md:w-[293px]"
-          >
-            <Image
-              src="/images/gallery-left.jpg"
-              alt="Prayer and praise"
-              fill
-              className="object-cover transition duration-700 hover:scale-105"
-              sizes="(max-width:768px) 100vw, 293px"
-            />
-          </Reveal>
-          <Reveal
-            delayMs={120}
-            variant="fade-up"
-            className="relative h-[280px] w-full overflow-hidden rounded-[24px] sm:h-[360px] sm:rounded-[32px] md:h-[512px] md:w-[390px]"
-          >
-            <Image
-              src="/images/gallery-center.jpg"
-              alt="Joyful fellowship"
-              fill
-              className="object-cover transition duration-700 hover:scale-105"
-              sizes="(max-width:768px) 100vw, 390px"
-            />
-          </Reveal>
-          <Reveal
-            delayMs={240}
-            variant="fade-up"
-            className="relative h-[240px] w-full overflow-hidden rounded-[24px] sm:h-[300px] sm:rounded-[30px] md:h-[384px] md:w-[293px]"
-          >
-            <Image
-              src="/images/gallery-right.jpg"
-              alt="Community together"
-              fill
-              className="object-cover transition duration-700 hover:scale-105"
-              sizes="(max-width:768px) 100vw, 293px"
-            />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Benefits grid */}
-      <section className="bg-grey px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-[7.33%]">
-        <div className="mx-auto max-w-[1280px]">
+      {/* Anchors */}
+      <section className="py-20 sm:py-28">
+        <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="Watch and listen"
-              title="The benefits of joining our ministry"
+              eyebrow="Four theological anchors"
+              title="Built on the whole arc of Scripture"
+              description="From Genesis to Revelation, four converging streams of Scripture form one vision of what God intends for the believer."
             />
           </Reveal>
-          <div className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
-            {benefitTiles.map((tile, index) => (
-              <Reveal
-                key={`${tile.title}-${index}`}
-                delayMs={index * 90}
-                variant="scale-in"
-              >
-                <article className="group relative aspect-[4/3] overflow-hidden sm:aspect-square">
-                  <Image
-                    src={tile.image}
-                    alt=""
-                    fill
-                    className="object-cover transition duration-700 group-hover:scale-110"
-                    sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition duration-500 group-hover:from-black/90" />
-                  <div className="absolute inset-x-0 bottom-0 translate-y-1 p-5 text-white transition duration-500 group-hover:translate-y-0 sm:p-6">
-                    <h3 className="font-display text-lg font-bold uppercase leading-snug tracking-tight sm:text-xl">
-                      {tile.title}
-                    </h3>
-                    <p className="mt-2 font-display text-sm leading-5 text-white/85">
-                      {tile.description}
-                    </p>
-                  </div>
-                </article>
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {anchors.map((anchor, index) => (
+              <Reveal key={anchor.slug} delayMs={index * 90} className="h-full">
+                <AnchorCard
+                  number={anchor.number}
+                  title={anchor.title}
+                  theme={anchor.theme}
+                  scripture={anchor.scripture}
+                  summary={anchor.summary}
+                  href={`/doctrine#${anchor.slug}`}
+                />
               </Reveal>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* Featured event */}
-      <section className="bg-white px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-[7.33%]">
-        <div className="mx-auto max-w-[1280px]">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Upcoming sermons & events"
-              title="Join us and become part of something great"
-            />
-          </Reveal>
-          <div className="mt-8 grid overflow-hidden sm:mt-12 lg:grid-cols-[minmax(280px,435px)_1fr]">
-            <Reveal variant="fade-left" className="relative bg-cream p-6 pr-20 sm:p-10 sm:pr-24 md:p-12">
-              <div className="absolute right-5 top-5 text-right sm:right-8 sm:top-8">
-                <p className="font-display text-xl font-bold text-navy sm:text-2xl">
-                  {featuredEvent.day}
-                </p>
-                <p className="font-display text-sm uppercase text-navy sm:text-base">
-                  {featuredEvent.month}
-                </p>
-              </div>
-              <p className="bg-gradient-to-r from-[#a54e2b] to-[#dc9853] bg-clip-text font-display text-xs font-bold uppercase tracking-[0.08em] text-transparent">
-                {featuredEvent.label}
-              </p>
-              <h3 className="mt-3 max-w-[16rem] font-display text-xl font-bold uppercase tracking-tight text-navy sm:text-2xl">
-                {featuredEvent.title}
-              </h3>
-              <p className="mt-4 max-w-sm font-display text-base leading-6 text-navy/80">
-                {featuredEvent.description}
-              </p>
-              <div className="mt-8 space-y-5">
-                <div className="flex items-start gap-3">
-                  <Image
-                    src="/icons/clock.svg"
-                    alt=""
-                    width={20}
-                    height={20}
-                    className="mt-0.5 shrink-0"
-                  />
-                  <p className="min-w-0 font-display text-base leading-6 text-navy normal-case tracking-normal">
-                    {featuredEvent.time}
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Image
-                    src="/icons/location.svg"
-                    alt=""
-                    width={20}
-                    height={25}
-                    className="mt-0.5 shrink-0"
-                  />
-                  <p className="min-w-0 font-display text-base leading-6 text-navy normal-case tracking-normal">
-                    {featuredEvent.location}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-8 sm:mt-10">
-                <Button href="/sermons" variant="dark">
-                  Register
+      {/* Dimensions */}
+      <section className="bg-ink py-20 text-cream sm:py-28">
+        <Container>
+          <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+            <Reveal>
+              <SectionHeading
+                align="left"
+                light
+                eyebrow="Our formation philosophy"
+                title="Not inspiration. Formation."
+                description="Everything we produce, from content to cohorts to curricula, is designed to form, not merely to inform or inspire."
+              />
+              <div className="mt-10">
+                <Button href="/formation" variant="outline-light">
+                  How we form
                 </Button>
               </div>
             </Reveal>
-            <Reveal
-              variant="fade-right"
-              delayMs={120}
-              className="relative min-h-[240px] sm:min-h-[360px] lg:min-h-[512px]"
-            >
+            <div className="grid gap-10 sm:grid-cols-2">
+              {dimensions.map((dimension, index) => (
+                <Reveal key={dimension.title} delayMs={index * 90}>
+                  <DimensionCard {...dimension} tone="dark" />
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Community */}
+      <section className="py-20 sm:py-28">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              eyebrow="Formed together"
+              title="A community of kings and priests"
+              description="Formation is never solitary. It happens in community, through doctrine, accountability and shared life."
+            />
+          </Reveal>
+          <div className="mt-14 grid gap-4 sm:grid-cols-6 sm:gap-5">
+            <Reveal className="relative aspect-[3/2] overflow-hidden sm:col-span-4 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]">
               <Image
-                src={featuredEvent.image}
-                alt=""
+                src={images.communityLineup.src}
+                alt={images.communityLineup.alt}
                 fill
-                className="object-cover"
-                sizes="(max-width:1024px) 100vw, 60vw"
+                className="object-cover object-[center_35%] transition duration-700 hover:scale-105"
+                sizes="(max-width:640px) 100vw, 66vw"
+              />
+            </Reveal>
+            <Reveal delayMs={100} className="relative aspect-[3/2] overflow-hidden sm:col-span-2">
+              <Image
+                src={images.worshipLead.src}
+                alt={images.worshipLead.alt}
+                fill
+                className="object-cover object-top transition duration-700 hover:scale-105"
+                sizes="(max-width:640px) 100vw, 33vw"
+              />
+            </Reveal>
+            <Reveal delayMs={200} className="relative aspect-[3/2] overflow-hidden sm:col-span-2">
+              <Image
+                src={images.fellowshipMaroon.src}
+                alt={images.fellowshipMaroon.alt}
+                fill
+                className="object-cover object-top transition duration-700 hover:scale-105"
+                sizes="(max-width:640px) 100vw, 33vw"
               />
             </Reveal>
           </div>
-          <Reveal delayMs={80} className="mt-6 flex justify-start sm:mt-8 sm:justify-end">
-            <Link
-              href="/sermons"
-              className="group inline-flex items-center gap-3 font-display text-lg text-navy transition hover:text-burgundy sm:text-2xl"
-            >
-              View all Sermons
+        </Container>
+      </section>
+
+      {/* Founder */}
+      <section className="bg-cream py-20 sm:py-28">
+        <Container>
+          <div className="grid items-center gap-12 md:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+            <Reveal variant="fade-left" className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden">
               <Image
-                src="/icons/arrow.svg"
-                alt=""
-                width={24}
-                height={15}
-                className="transition duration-300 group-hover:translate-x-1.5"
+                src={images.founderPortrait.src}
+                alt={images.founderPortrait.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width:768px) 100vw, 400px"
               />
-            </Link>
-          </Reveal>
-        </div>
+            </Reveal>
+            <Reveal variant="fade-right" delayMs={120}>
+              <p className="eyebrow text-burgundy">Meet the founder</p>
+              <h2 className="mt-4 font-serif text-5xl font-semibold leading-none tracking-tight text-ink sm:text-6xl">
+                {founder.name}
+              </h2>
+              <p className="eyebrow mt-4 text-ink/50">{founder.role}</p>
+              <p className="mt-8 font-serif text-2xl italic leading-snug text-ink sm:text-3xl">
+                &ldquo;{founder.quote}&rdquo;
+              </p>
+              <p className="mt-6 max-w-xl text-base leading-7 text-ink/70">
+                {founder.bio[0]}
+              </p>
+              <div className="mt-8">
+                <Button href="/about#founder" variant="outline">
+                  Read more
+                </Button>
+              </div>
+            </Reveal>
+          </div>
+        </Container>
       </section>
 
-      {/* Serve quote */}
-      <section className="relative overflow-hidden py-16 sm:py-24 md:py-32">
-        <Image
-          src="/images/hero-serve.jpg"
-          alt="Serving our community"
-          fill
-          className="object-cover transition duration-[2s] ease-out hover:scale-105"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="relative mx-auto w-full max-w-[1500px] px-4 sm:px-6 md:px-10 lg:px-[7.33%]">
-          <Reveal variant="scale-in" className="relative max-w-[520px] bg-white p-6 sm:p-10 md:p-14">
-            <Image
-              src="/icons/quote.svg"
-              alt=""
-              width={120}
-              height={90}
-              className="absolute right-4 top-4 w-16 opacity-70 sm:right-8 sm:top-8 sm:w-[120px]"
-            />
-            <h2 className="relative max-w-[360px] pr-12 font-display text-2xl font-bold uppercase leading-tight tracking-tight text-navy sm:pr-0 sm:text-3xl md:text-[40px] md:leading-[52px]">
-              We want to serve the world around us
-            </h2>
-            <div className="relative mt-6 sm:mt-8">
-              <Button href="/contact">Visit</Button>
-            </div>
+      {/* Vision */}
+      <section className="py-20 sm:py-28">
+        <Container>
+          <Reveal className="mx-auto max-w-4xl text-center">
+            <p className="eyebrow text-burgundy">The vision of output</p>
+            <p className="mt-6 font-serif text-3xl font-medium italic leading-snug text-ink sm:text-4xl md:text-5xl">
+              &ldquo;{vision.quote}&rdquo;
+            </p>
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-ink/70 sm:text-lg">
+              {vision.body}
+            </p>
           </Reveal>
-        </div>
-      </section>
-
-      {/* Blog */}
-      <section
-        id="blog"
-        className="bg-white px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-[7.33%]"
-      >
-        <div className="mx-auto max-w-[1280px]">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Read our Blog"
-              title="Share, inspire, innovate"
-            />
-          </Reveal>
-          <div className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
-            {blogPosts.map((post, index) => (
-              <Reveal key={post.title} delayMs={index * 90} variant="fade-up">
-                <article
-                  className={`flex min-h-[300px] flex-col bg-cream p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md sm:min-h-[340px] sm:p-8 ${
-                    post.featured ? "border-b-4 border-primary" : ""
-                  }`}
-                >
-                  <p className="bg-gradient-to-r from-[#a54e2b] to-[#dc9853] bg-clip-text font-display text-xs font-bold uppercase tracking-[0.08em] text-transparent">
-                    {post.category}
-                  </p>
-                  <h3 className="mt-4 font-display text-xl font-bold uppercase leading-snug tracking-tight text-navy sm:text-2xl">
-                    {post.title}
-                  </h3>
-                  <p className="mt-4 flex-1 font-display text-base leading-6 text-navy/80">
-                    {post.excerpt}
-                  </p>
-                  <div className="mt-6 border-t border-navy/10 pt-4 font-display text-sm text-navy/70">
-                    <p>By {post.author}</p>
-                    <p className="mt-1">{post.date}</p>
-                  </div>
-                </article>
+          <div className="mt-14 grid gap-px overflow-hidden border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-3">
+            {spheres.map((sphere, index) => (
+              <Reveal key={sphere.title} delayMs={index * 70} className="bg-paper p-7 sm:p-8">
+                <h3 className="font-serif text-2xl font-semibold text-ink">
+                  {sphere.title}
+                </h3>
+                <p className="mt-2 text-base leading-7 text-ink/70">
+                  {sphere.description}
+                </p>
               </Reveal>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
+
+      <CTABand
+        eyebrow="Begin your formation"
+        title="Go deep before going wide."
+        body="Whether you want to join a cohort, invite the ministry, or simply ask a question, we would love to hear from you."
+        primary={{ href: "/contact", label: "Make an enquiry" }}
+        secondary={{ href: "/formation#gatherings", label: "Gatherings & cohorts" }}
+      />
     </>
   );
 }

@@ -1,47 +1,51 @@
 import Image from "next/image";
+import { Container } from "./Container";
 
 type PageHeroProps = {
   eyebrow: string;
   title: string;
-  image: string;
-  overlay?: "dark" | "light" | "none";
-  titleClassName?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  imagePosition?: string;
 };
 
 export function PageHero({
   eyebrow,
   title,
+  description,
   image,
-  overlay = "dark",
-  titleClassName = "text-white",
+  imageAlt = "",
+  imagePosition = "object-center",
 }: PageHeroProps) {
   return (
-    <section className="relative flex min-h-[280px] items-center overflow-hidden sm:min-h-[340px] md:min-h-[420px]">
-      <Image
-        src={image}
-        alt=""
-        fill
-        priority
-        className="object-cover"
-        sizes="100vw"
-      />
-      {overlay !== "none" ? (
-        <div
-          className={`absolute inset-0 ${
-            overlay === "dark" ? "bg-black/45" : "bg-white/35"
-          }`}
-        />
-      ) : null}
-      <div className="relative mx-auto w-full max-w-[1500px] px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-[7.33%]">
-        <p className="font-display text-sm uppercase text-primary sm:text-base">
-          {eyebrow}
-        </p>
-        <h1
-          className={`mt-2 max-w-[640px] font-display text-3xl font-bold uppercase leading-tight tracking-tight sm:text-4xl md:text-5xl md:leading-[64px] ${titleClassName}`}
-        >
+    <section className="relative isolate flex min-h-[380px] items-end overflow-hidden bg-ink sm:min-h-[460px] md:min-h-[540px]">
+      {image ? (
+        <>
+          <Image
+            src={image}
+            alt={imageAlt}
+            fill
+            priority
+            className={`hero-media -z-10 object-cover ${imagePosition}`}
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/70 to-ink/30" />
+        </>
+      ) : (
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,var(--burgundy-deep),transparent_60%)]" />
+      )}
+      <Container className="pb-14 pt-28 sm:pb-20">
+        <p className="hero-enter hero-enter-delay-1 eyebrow text-cream/75">{eyebrow}</p>
+        <h1 className="hero-enter hero-enter-delay-2 mt-4 max-w-3xl font-serif text-5xl font-semibold leading-[1.02] tracking-tight text-cream sm:text-6xl md:text-7xl">
           {title}
         </h1>
-      </div>
+        {description ? (
+          <p className="hero-enter hero-enter-delay-3 mt-6 max-w-2xl text-base leading-7 text-cream/80 sm:text-lg">
+            {description}
+          </p>
+        ) : null}
+      </Container>
     </section>
   );
 }
