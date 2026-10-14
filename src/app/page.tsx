@@ -19,7 +19,13 @@ import {
   thesis,
   vision,
 } from "@/lib/content";
+import { createMetadata, ogImage } from "@/lib/seo";
 import { site, socialLinks } from "@/lib/site";
+
+export const metadata = createMetadata({
+  description: site.description,
+  path: "/",
+});
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -28,10 +34,16 @@ const organizationJsonLd = {
   alternateName: site.name,
   url: site.url,
   logo: `${site.url}/logos/logo-cream-on-red.png`,
+  image: `${site.url}${ogImage.url}`,
   email: site.email,
   description: site.description,
   slogan: site.tagline,
-  founder: { "@type": "Person", name: site.founder },
+  founder: {
+    "@type": "Person",
+    name: site.founder,
+    jobTitle: "Founder",
+    worksFor: { "@type": "Organization", name: site.legalName },
+  },
   sameAs: socialLinks.map((link) => link.href),
 };
 

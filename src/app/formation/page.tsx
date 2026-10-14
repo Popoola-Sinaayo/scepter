@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import { Button } from "@/components/Button";
 import { CTABand } from "@/components/CTABand";
@@ -16,15 +15,14 @@ import {
   spheres,
   vision,
 } from "@/lib/content";
+import { createMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createMetadata({
   title: "Formation",
   description:
     "How The Scepter forms believers: theological, spiritual, leadership and vocational formation for every sphere of life. Join a cohort or gathering.",
-  openGraph: {
-    images: [{ url: images.teachingRoom.src, width: 1024, height: 683 }],
-  },
-};
+  path: "/formation",
+});
 
 export default function FormationPage() {
   return (

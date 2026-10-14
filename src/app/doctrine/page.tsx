@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { CTABand } from "@/components/CTABand";
 import { Container } from "@/components/Container";
 import { PageHero } from "@/components/PageHero";
@@ -14,15 +13,14 @@ import {
   thesis,
   witness,
 } from "@/lib/content";
+import { createMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createMetadata({
   title: "Our Doctrine",
   description:
     "The theological foundation of The Scepter: the Genesis mandate, the order of Melchizedek, the royal priesthood of 1 Peter 2:9 and the eternal confirmation of Revelation. The altar precedes the throne.",
-  openGraph: {
-    images: [{ url: images.preachingGesture.src, width: 768, height: 1024 }],
-  },
-};
+  path: "/doctrine",
+});
 
 export default function DoctrinePage() {
   return (

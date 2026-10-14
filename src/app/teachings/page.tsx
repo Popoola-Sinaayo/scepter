@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { CTABand } from "@/components/CTABand";
 import { Container } from "@/components/Container";
 import { PageHero } from "@/components/PageHero";
@@ -6,16 +5,15 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { SocialIcon } from "@/components/SocialIcon";
 import { images, teachings } from "@/lib/content";
+import { createMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = createMetadata({
   title: "Teachings",
   description:
     "Sermons, teaching series and writing from The Scepter on identity, priestly formation and witness in every sphere.",
-  openGraph: {
-    images: [{ url: images.founderLectern.src, width: 768, height: 1024 }],
-  },
-};
+  path: "/teachings",
+});
 
 const channels = [
   {

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import { CTABand } from "@/components/CTABand";
 import { Container } from "@/components/Container";
@@ -8,15 +7,14 @@ import { ScriptureQuote } from "@/components/ScriptureQuote";
 import { SectionHeading } from "@/components/SectionHeading";
 import { StatementBand } from "@/components/StatementBand";
 import { anchors, founder, images, institution, preamble, witness } from "@/lib/content";
+import { createMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = createMetadata({
   title: "About",
   description: `${site.legalName} is an institution built on formation, forming believers into their identity as kings and priests. Meet our founder, ${site.founder}.`,
-  openGraph: {
-    images: [{ url: images.communityCover.src, width: 1024, height: 682 }],
-  },
-};
+  path: "/about",
+});
 
 const pillars = [
   {

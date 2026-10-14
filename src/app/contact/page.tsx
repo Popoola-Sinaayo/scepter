@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
 import { Container } from "@/components/Container";
 import { PageHero } from "@/components/PageHero";
 import { SocialIcon } from "@/components/SocialIcon";
 import { images } from "@/lib/content";
+import { createMetadata } from "@/lib/seo";
 import { site, socialLinks } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = createMetadata({
   title: "Contact",
   description: `Send an enquiry to ${site.legalName}: questions, cohorts, speaking invitations and more.`,
-};
+  path: "/contact",
+});
 
 export default async function ContactPage({
   searchParams,
