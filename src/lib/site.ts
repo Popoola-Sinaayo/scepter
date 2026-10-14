@@ -7,7 +7,7 @@ export const site = {
   url: "https://thescepterglobal.com",
   founder: "Precious Alo",
   // TODO: confirm the real ministry inbox.
-  email: "info@thescepterglobal.com",
+  email: "info@thescepterglobal.org",
   // TODO: replace with the real phone number, or set to "" to hide it.
   phone: "" as string,
   // TODO: replace with the real city / venue, or leave empty to hide it.

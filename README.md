@@ -37,7 +37,7 @@ Website for **The Scepter Christian Ministries**, built around the Formation The
 
    ```bash
    RESEND_API_KEY=re_...
-   CONTACT_TO_EMAIL=info@thescepterglobal.com
+   CONTACT_TO_EMAIL=info@thescepterglobal.org
    CONTACT_FROM_EMAIL=The Scepter <hello@thescepterglobal.com>
    RESEND_SEGMENT_ID=           # optional, for footer subscribers
    ```
