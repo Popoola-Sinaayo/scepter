@@ -13,7 +13,6 @@ export function getResend() {
 export const emailConfig = {
   from: process.env.CONTACT_FROM_EMAIL ?? `${site.name} <onboarding@resend.dev>`,
   to: process.env.CONTACT_TO_EMAIL ?? site.email,
-  segmentId: process.env.RESEND_SEGMENT_ID,
 };
 
 export function escapeHtml(value: string) {

@@ -1,7 +1,8 @@
 "use server";
 
 import { z } from "zod";
-import { emailConfig, escapeHtml, getResend, brandedEmail } from "@/lib/email";
+import { addNewsletterSubscriber } from "@/lib/brevo";
+import { brandedEmail, emailConfig, escapeHtml, getResend } from "@/lib/email";
 
 export type SubscribeState = {
   status: "idle" | "success" | "error";
@@ -20,38 +21,40 @@ export async function subscribe(
     return { status: "error", message: "Please enter a valid email address." };
   }
 
-  const resend = getResend();
-  if (!resend) {
-    console.error("RESEND_API_KEY is not set; subscription could not be saved.");
-    return {
-      status: "error",
-      message: "Subscriptions are temporarily unavailable. Please try again later.",
-    };
+  const email = parsed.data;
+  const result = await addNewsletterSubscriber(email);
+
+  if (result.ok) {
+    return { status: "success", message: "You're subscribed. Welcome." };
   }
 
-  const email = parsed.data;
-  const { error } = await resend.contacts.create({
-    email,
-    unsubscribed: false,
-    ...(emailConfig.segmentId ? { segments: [{ id: emailConfig.segmentId }] } : {}),
-  });
+  console.error("Failed to save Brevo subscriber", result);
 
-  if (error) {
-    console.error("Failed to save subscriber, notifying the team instead", error);
+  // Fallback: notify the team via Resend so the signup is not lost.
+  const resend = getResend();
+  if (resend) {
     const fallback = await resend.emails.send({
       from: emailConfig.from,
       to: emailConfig.to,
       subject: "[Website] New update subscriber",
       html: brandedEmail({
         heading: "New subscriber",
-        body: `<p>${escapeHtml(email)} asked to receive teachings and gathering updates.</p>`,
+        body: `<p>${escapeHtml(email)} asked to receive teachings and gathering updates.</p>
+<p style="font-size:13px;color:#6b7280;">Brevo save failed: ${escapeHtml(result.message)}</p>`,
       }),
     });
-    if (fallback.error) {
-      console.error("Failed to send subscriber notification", fallback.error);
-      return { status: "error", message: "Something went wrong. Please try again." };
+    if (!fallback.error) {
+      return { status: "success", message: "You're subscribed. Welcome." };
     }
+    console.error("Failed to send subscriber notification", fallback.error);
   }
 
-  return { status: "success", message: "You're subscribed. Welcome." };
+  if (result.status === 0) {
+    return {
+      status: "error",
+      message: "Subscriptions are temporarily unavailable. Please try again later.",
+    };
+  }
+
+  return { status: "error", message: "Something went wrong. Please try again." };
 }
