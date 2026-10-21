@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Apps Script source for the CLAY registrations sheet (kept out of the repo)
+google-apps-script/

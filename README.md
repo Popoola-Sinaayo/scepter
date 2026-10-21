@@ -19,6 +19,9 @@ Website for **The Scepter Christian Ministries**, built around the Formation The
 | `/formation` | Formation philosophy, spheres, gatherings and cohorts |
 | `/teachings` | Teaching channels and recent teachings |
 | `/contact` | Enquiry form |
+| `/clay` | CLAY Conference 2026 — EMERGENCE |
+| `/clay/register` | Conference attendance registration |
+| `/clay/volunteer` | Conference volunteer registration |
 
 `/sermons` and `/blog` permanently redirect to `/teachings`.
 
@@ -59,6 +62,28 @@ When someone submits the contact form, the team receives the enquiry (replying g
    ```
 
 Footer subscribers are created/updated in Brevo and added to that list. If Brevo is unavailable and Resend is configured, the team is emailed the signup as a fallback.
+
+## CLAY Conference registrations (Google Sheets)
+
+Submissions from `/clay/register` and `/clay/volunteer` are saved as rows in a Google Sheet, in the **Attendees** and **Volunteers** tabs. The tabs and header rows are created automatically on the first submission.
+
+1. Create a Google Sheet (e.g. “CLAY 2026 Registrations”) in the ministry's Google account.
+2. Open **Extensions → Apps Script**, delete the sample code, and paste in `google-apps-script/clay-registrations.gs`.
+3. Replace `SECRET` at the top of the script with a long random string (e.g. the output of `openssl rand -hex 24`) and save.
+4. Click **Deploy → New deployment**, choose type **Web app**, set **Execute as: Me** and **Who has access: Anyone**, then **Deploy**. Approve the permissions prompt (choose **Advanced → Go to project** if Google warns the app is unverified).
+5. Copy the **Web app URL** (ends in `/exec`). Opening it in a browser should show `"CLAY registrations webhook is running."`
+6. Add to `.env.local` (and your hosting provider):
+
+   ```bash
+   GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/.../exec
+   GOOGLE_SHEETS_WEBHOOK_SECRET=the-same-secret-as-in-the-script
+   ```
+
+If you edit the script later, use **Deploy → Manage deployments → Edit → Version: New version** so the URL stays the same.
+
+Registrants receive a confirmation email through Resend (see above). If the sheet cannot be reached, the full registration is emailed to `CONTACT_TO_EMAIL` instead so it is not lost.
+
+Conference dates, venue, category eligibility wording, and the volunteer day/time options live in `src/lib/clay.ts`.
 
 ## Develop
 
