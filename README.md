@@ -81,7 +81,7 @@ Submissions from `/clay/register` and `/clay/volunteer` are saved as rows in a G
 
 If you edit the script later, use **Deploy → Manage deployments → Edit → Version: New version** so the URL stays the same.
 
-Registrants receive a confirmation email through Resend (see above). If the sheet cannot be reached, the full registration is emailed to `CONTACT_TO_EMAIL` instead so it is not lost.
+Registrants receive a confirmation email (with the date and venue) sent through Brevo, using the same `BREVO_API_KEY` as the newsletter; Resend is used only if Brevo is not configured or fails. The sender defaults to `info@thescepterglobal.org` and must be verified in Brevo under **Senders, Domains & Dedicated IPs**; override it with `BREVO_SENDER_EMAIL` / `BREVO_SENDER_NAME`. If the sheet cannot be reached, the full registration is emailed to `CONTACT_TO_EMAIL` instead so it is not lost.
 
 Conference dates, venue, category eligibility wording, and the volunteer day/time options live in `src/lib/clay.ts`.
 

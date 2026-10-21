@@ -1,5 +1,6 @@
 import type { ReactNode, Ref } from "react";
 import { Button } from "@/components/Button";
+import { clay } from "@/lib/clay";
 import { site } from "@/lib/site";
 
 export function RegistrationComplete({
@@ -24,6 +25,22 @@ export function RegistrationComplete({
       <p className="eyebrow text-burgundy">{eyebrow}</p>
       <p className="mt-3 font-serif text-3xl font-semibold leading-tight text-ink sm:text-4xl">{title}</p>
       <div className="mt-5 space-y-4 text-base leading-7 text-ink/75">{children}</div>
+      {clay.dates || clay.venue ? (
+        <dl className="mt-6 grid gap-4 border-t border-ink/10 pt-6 sm:grid-cols-2">
+          {clay.dates ? (
+            <div>
+              <dt className="eyebrow text-ink/50">Date</dt>
+              <dd className="mt-1 font-serif text-xl font-semibold text-ink">{clay.dates}</dd>
+            </div>
+          ) : null}
+          {clay.venue ? (
+            <div>
+              <dt className="eyebrow text-ink/50">Venue</dt>
+              <dd className="mt-1 font-serif text-xl font-semibold text-ink">{clay.venue}</dd>
+            </div>
+          ) : null}
+        </dl>
+      ) : null}
       {reference ? (
         <p className="mt-6 text-sm text-ink/60">
           Your reference: <span className="font-bold tracking-wider text-ink">{reference}</span>

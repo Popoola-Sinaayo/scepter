@@ -2,9 +2,10 @@ export const clay = {
   name: "CLAY Conference 2026",
   theme: "EMERGENCE",
   title: "CLAY Conference 2026 — EMERGENCE",
-  // TODO: add the confirmed dates and venue. Empty values are hidden.
-  dates: "" as string,
-  venue: "" as string,
+  shortTitle: "CLAYCON 2026 — EMERGENCE",
+  // Empty values are hidden.
+  dates: "November 28th, 2026" as string,
+  venue: "Solution Arena, 156 Ikorodu Road, Onipanu, Lagos" as string,
 } as const;
 
 export const yesNo = ["Yes", "No"] as const;

@@ -40,9 +40,8 @@ export function AttendeeForm() {
         reference={state.reference}
       >
         <p>
-          Your registration details have been received. Further information about the conference,
-          including the venue, schedule and attendance arrangements, will be communicated through your
-          email.
+          Your registration details have been received. Further information about the schedule and
+          attendance arrangements will be communicated through your email.
         </p>
         <p>We look forward to welcoming you!</p>
       </RegistrationComplete>

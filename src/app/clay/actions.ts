@@ -17,6 +17,7 @@ import {
   yesNoNotApplicable,
   yesNoNotSure,
 } from "@/lib/clay";
+import { isBrevoEmailConfigured, sendBrevoEmail } from "@/lib/brevo";
 import { countries } from "@/lib/countries";
 import { brandedEmail, emailConfig, escapeHtml, getResend } from "@/lib/email";
 import { appendSheetRow, type SheetName, type SheetRow } from "@/lib/sheets";
@@ -71,6 +72,21 @@ function invalid(errors: FieldErrors): RegistrationState {
   return { status: "error", message: "Please check the highlighted fields.", errors };
 }
 
+function eventDetailsHtml() {
+  const lines = [
+    `<strong>${escapeHtml(clay.shortTitle)}</strong>`,
+    clay.dates ? `📅 ${escapeHtml(clay.dates)}` : "",
+    clay.venue ? `📍 ${escapeHtml(clay.venue)}` : "",
+  ].filter(Boolean);
+  return `<p style="padding:16px;border-left:3px solid #9e2b2b;background:#fdf8ec;font-size:16px;line-height:1.7;">${lines.join("<br />")}</p>`;
+}
+
+function eventDetailsText() {
+  return [clay.shortTitle, clay.dates ? `📅 ${clay.dates}` : "", clay.venue ? `📍 ${clay.venue}` : ""]
+    .filter(Boolean)
+    .join("\n");
+}
+
 function rowToHtml(row: SheetRow) {
   const rows = Object.entries(row)
     .filter(([, value]) => value !== "")
@@ -98,45 +114,59 @@ type SaveInput = {
   ack: { subject: string; heading: string; html: string; text: string };
 };
 
-async function saveRegistration({ sheet, row, name, email, label, ack }: SaveInput) {
+type OutgoingEmail = { to: string; replyTo?: string; subject: string; html: string; text: string };
+
+/** Sends with Brevo when configured, otherwise Resend. Returns false if nothing could send it. */
+async function sendEmail(message: OutgoingEmail, label: string) {
+  if (isBrevoEmailConfigured()) {
+    const sent = await sendBrevoEmail({ ...message, to: { email: message.to } });
+    if (sent.ok) return true;
+    console.error(`Failed to send ${label} via Brevo`, sent);
+  }
+
   const resend = getResend();
+  if (resend) {
+    const sent = await resend.emails.send({ from: emailConfig.from, ...message });
+    if (!sent.error) return true;
+    console.error(`Failed to send ${label} via Resend`, sent.error);
+  }
+
+  return false;
+}
+
+async function saveRegistration({ sheet, row, name, email, label, ack }: SaveInput) {
   const saved = await appendSheetRow(sheet, row);
 
   if (!saved.ok) {
     console.error(`Failed to save ${label} to Google Sheets`, saved);
 
     // Fallback: email the team so the registration is not lost.
-    const fallback = resend
-      ? await resend.emails.send({
-          from: emailConfig.from,
-          to: emailConfig.to,
-          replyTo: email,
-          subject: `[${clay.name}] ${label} from ${name} (not saved to sheet)`,
-          html: brandedEmail({
-            heading: `New ${label.toLowerCase()}`,
-            body: `<p style="padding:12px 16px;background:#fcf0d6;">This registration could not be saved to Google Sheets, so please add it manually.<br /><span style="font-size:13px;color:#6b7280;">${escapeHtml(saved.message)}</span></p>${rowToHtml(row)}`,
-          }),
-          text: `This registration could not be saved to Google Sheets (${saved.message}).\n\n${rowToText(row)}`,
-        })
-      : null;
-
-    if (!fallback || fallback.error) {
-      if (fallback?.error) console.error(`Failed to email ${label} fallback`, fallback.error);
-      return false;
-    }
+    const notified = await sendEmail(
+      {
+        to: emailConfig.to,
+        replyTo: email,
+        subject: `[${clay.name}] ${label} from ${name} (not saved to sheet)`,
+        html: brandedEmail({
+          heading: `New ${label.toLowerCase()}`,
+          body: `<p style="padding:12px 16px;background:#fcf0d6;">This registration could not be saved to Google Sheets, so please add it manually.<br /><span style="font-size:13px;color:#6b7280;">${escapeHtml(saved.message)}</span></p>${rowToHtml(row)}`,
+        }),
+        text: `This registration could not be saved to Google Sheets (${saved.message}).\n\n${rowToText(row)}`,
+      },
+      `${label} fallback`,
+    );
+    if (!notified) return false;
   }
 
-  if (resend) {
-    const sent = await resend.emails.send({
-      from: emailConfig.from,
+  await sendEmail(
+    {
       to: email,
       replyTo: emailConfig.to,
       subject: ack.subject,
       html: brandedEmail({ heading: ack.heading, body: ack.html }),
       text: ack.text,
-    });
-    if (sent.error) console.error(`Failed to send ${label} confirmation`, sent.error);
-  }
+    },
+    `${label} confirmation`,
+  );
 
   return true;
 }
@@ -263,14 +293,15 @@ export async function registerAttendee(
     ack: {
       subject: `You're registered for ${clay.title}`,
       heading: `Thank you for registering, ${firstName}.`,
-      html: `<p>Your registration for <strong>${escapeHtml(clay.title)}</strong> has been received.</p>
+      html: `<p>You have been registered for <strong>${escapeHtml(clay.title)}</strong>.</p>
+${eventDetailsHtml()}
 <p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}<br />
 <strong>Category:</strong> ${escapeHtml(raw.category)}<br />
 <strong>Attending in person:</strong> ${raw.inPerson}${hasChildren ? `<br /><strong>Children:</strong> ${childrenCount}` : ""}</p>
-<p>Further information about the conference, including the venue, schedule and attendance arrangements, will be communicated to you by email.</p>
+<p>Further information about the schedule and attendance arrangements will be communicated to you by email.</p>
 <p>We look forward to welcoming you!</p>
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
-      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYour registration for ${clay.title} has been received.\n\nReference: ${reference}\nCategory: ${raw.category}\nAttending in person: ${raw.inPerson}${hasChildren ? `\nChildren: ${childrenCount}` : ""}\n\nFurther information about the conference, including the venue, schedule and attendance arrangements, will be communicated to you by email.\n\nWe look forward to welcoming you!\n\n${site.legalName}`,
+      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYou have been registered for ${clay.title}.\n\n${eventDetailsText()}\n\nReference: ${reference}\nCategory: ${raw.category}\nAttending in person: ${raw.inPerson}${hasChildren ? `\nChildren: ${childrenCount}` : ""}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\nWe look forward to welcoming you!\n\n${site.legalName}`,
     },
   });
 
@@ -420,11 +451,12 @@ export async function registerVolunteer(
       heading: `Thank you, ${firstName}.`,
       html: `<p>Thank you for your willingness to serve at <strong>${escapeHtml(clay.title)}</strong>.</p>
 <p>Your volunteer registration has been received. Our volunteer coordination team will review your preferences, skills and availability and communicate the next steps.</p>
+${eventDetailsHtml()}
 <p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}<br />
 <strong>Preferred departments:</strong> ${escapeHtml(raw.departments.join(", "))}</p>
 <p>We appreciate your heart to serve and look forward to connecting with you!</p>
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
-      text: `Thank you, ${raw.fullName.split(" ")[0]}.\n\nThank you for your willingness to serve at ${clay.title}.\n\nYour volunteer registration has been received. Our volunteer coordination team will review your preferences, skills and availability and communicate the next steps.\n\nReference: ${reference}\nPreferred departments: ${raw.departments.join(", ")}\n\nWe appreciate your heart to serve and look forward to connecting with you!\n\n${site.legalName}`,
+      text: `Thank you, ${raw.fullName.split(" ")[0]}.\n\nThank you for your willingness to serve at ${clay.title}.\n\nYour volunteer registration has been received. Our volunteer coordination team will review your preferences, skills and availability and communicate the next steps.\n\n${eventDetailsText()}\n\nReference: ${reference}\nPreferred departments: ${raw.departments.join(", ")}\n\nWe appreciate your heart to serve and look forward to connecting with you!\n\n${site.legalName}`,
     },
   });
 
