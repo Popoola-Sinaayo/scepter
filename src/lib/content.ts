@@ -56,12 +56,6 @@ export const images = {
     src: "/images/ministry/fellowship-maroon.jpg",
     alt: "Precious Alo with a ministry partner, both smiling and giving thumbs up",
   },
-  clayconPoster: {
-    src: "/images/ministry/claycon-2026-poster.jpg",
-    alt: "CLAYCON 2026 poster by The Scepter: Saturday 28th November 2026",
-    width: 768,
-    height: 1024,
-  },
   clayVolunteers: {
     src: "/images/ministry/clay-volunteers.jpg",
     alt: "Seven smiling members of The Scepter community taking a group selfie, giving thumbs up",
