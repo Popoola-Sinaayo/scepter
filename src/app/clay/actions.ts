@@ -10,12 +10,9 @@ import {
   registrationCategoryValues,
   volunteerDays,
   volunteerDepartments,
-  volunteerSkills,
-  volunteerTimes,
   yesNo,
   yesNoDepends,
   yesNoNotApplicable,
-  yesNoNotSure,
 } from "@/lib/clay";
 import { isBrevoEmailConfigured, sendBrevoEmail } from "@/lib/brevo";
 import { countries } from "@/lib/countries";
@@ -185,9 +182,7 @@ const attendeeSchema = z.object({
   city: field.required("Please enter your city and state."),
   country: field.choice(countries, "Please select your country."),
   ageRange: field.optionalChoice(ageRanges),
-  church: field.optional(),
   heardAbout: field.choice(hearAboutOptions, "Please tell us how you heard about the conference."),
-  heardAboutOther: field.optional(),
   category: field.choice(registrationCategoryValues, "Please choose a registration category."),
   inPerson: field.choice(yesNo),
   withChildren: field.choice(yesNo),
@@ -215,9 +210,7 @@ export async function registerAttendee(
     city: text(formData, "city"),
     country: text(formData, "country"),
     ageRange: text(formData, "ageRange"),
-    church: text(formData, "church"),
     heardAbout: text(formData, "heardAbout"),
-    heardAboutOther: text(formData, "heardAboutOther"),
     category: text(formData, "category"),
     inPerson: text(formData, "inPerson"),
     withChildren: text(formData, "withChildren"),
@@ -264,11 +257,7 @@ export async function registerAttendee(
     "City and state": raw.city,
     Country: raw.country,
     "Age range": raw.ageRange,
-    "Church or ministry": raw.church,
-    "Heard about CLAY via":
-      raw.heardAbout === "Other" && raw.heardAboutOther
-        ? `Other: ${raw.heardAboutOther}`
-        : raw.heardAbout,
+    "Heard about CLAY via": raw.heardAbout,
     "Registration category": raw.category,
     "Attending in person": raw.inPerson,
     "Attending with children": raw.withChildren,
@@ -323,21 +312,14 @@ const volunteerSchema = z.object({
   departments: field
     .multi(volunteerDepartments, "Please select at least one department.")
     .max(maxVolunteerDepartments, `Please select no more than ${maxVolunteerDepartments} departments.`),
-  skills: field.multi(volunteerSkills, "Please select at least one skill or area of experience."),
-  skillsOther: field.optional(),
+  otherArea: field.optional(),
+  otherSkills: field.optional(2000),
   skillsDescription: field.optional(2000),
-  otherDepartments: field.optionalChoice(yesNo),
-  otherDepartmentsDetails: field.optional(),
   availableDays: field.multi(volunteerDays, "Please select the days you are available."),
-  availableTimes: field.multi(volunteerTimes, "Please select the times you are available."),
   trainingAvailability: field.choice(yesNoDepends),
   setupAvailability: field.choice(yesNoDepends),
   cleanupAvailability: field.choice(yesNoDepends),
   schedulingConstraints: field.optional(2000),
-  transportAssistance: field.choice(yesNoNotSure),
-  needsAccessibility: field.optionalChoice(yesNo),
-  accessibilityDetails: field.optional(500),
-  hasWhatsApp: field.optionalChoice(yesNo),
   followGuidelines: field.choice(yesNo),
   attendOrientation: field.choice(yesNo),
   collaborate: field.choice(yesNo),
@@ -364,21 +346,14 @@ export async function registerVolunteer(
     volunteeredBefore: text(formData, "volunteeredBefore"),
     experience: text(formData, "experience"),
     departments: list(formData, "departments"),
-    skills: list(formData, "skills"),
-    skillsOther: text(formData, "skillsOther"),
+    otherArea: text(formData, "otherArea"),
+    otherSkills: text(formData, "otherSkills"),
     skillsDescription: text(formData, "skillsDescription"),
-    otherDepartments: text(formData, "otherDepartments"),
-    otherDepartmentsDetails: text(formData, "otherDepartmentsDetails"),
     availableDays: list(formData, "availableDays"),
-    availableTimes: list(formData, "availableTimes"),
     trainingAvailability: text(formData, "trainingAvailability"),
     setupAvailability: text(formData, "setupAvailability"),
     cleanupAvailability: text(formData, "cleanupAvailability"),
     schedulingConstraints: text(formData, "schedulingConstraints"),
-    transportAssistance: text(formData, "transportAssistance"),
-    needsAccessibility: text(formData, "needsAccessibility"),
-    accessibilityDetails: text(formData, "accessibilityDetails"),
-    hasWhatsApp: text(formData, "hasWhatsApp"),
     followGuidelines: text(formData, "followGuidelines"),
     attendOrientation: text(formData, "attendOrientation"),
     collaborate: text(formData, "collaborate"),
@@ -393,9 +368,6 @@ export async function registerVolunteer(
 
   if (text(formData, "volunteeredBefore") === "Yes" && !text(formData, "experience")) {
     addError(errors, "experience", "Please briefly describe your volunteering experience.");
-  }
-  if (text(formData, "needsAccessibility") === "Yes" && !text(formData, "accessibilityDetails")) {
-    addError(errors, "accessibilityDetails", "Please tell us what assistance would be helpful.");
   }
 
   if (!raw || Object.keys(errors).length > 0) return invalid(errors);
@@ -413,23 +385,14 @@ export async function registerVolunteer(
     "Volunteered before": raw.volunteeredBefore,
     "Volunteering experience": raw.volunteeredBefore === "Yes" ? raw.experience : "",
     "Preferred departments": raw.departments.join(", "),
-    Skills: [
-      ...raw.skills.filter((skill) => skill !== "Other"),
-      ...(raw.skills.includes("Other") ? [raw.skillsOther ? `Other: ${raw.skillsOther}` : "Other"] : []),
-    ].join(", "),
-    "Skills and experience details": raw.skillsDescription,
-    "Willing to support other departments": raw.otherDepartments,
-    "Other departments": raw.otherDepartments === "Yes" ? raw.otherDepartmentsDetails : "",
+    "Other area to serve": raw.otherArea,
+    "Other skills or qualifications": raw.otherSkills,
+    "Skills for selected department": raw.skillsDescription,
     "Available days": raw.availableDays.join(", "),
-    "Available times": raw.availableTimes.join(", "),
     "Pre-conference training": raw.trainingAvailability,
     "Venue setup": raw.setupAvailability,
     "Post-event cleanup": raw.cleanupAvailability,
     "Scheduling constraints": raw.schedulingConstraints,
-    "Needs transport assistance": raw.transportAssistance,
-    "Accessibility requirements": raw.needsAccessibility,
-    "Accessibility details": raw.needsAccessibility === "Yes" ? raw.accessibilityDetails : "",
-    "Smartphone and WhatsApp": raw.hasWhatsApp,
     "Will follow volunteer guidelines": raw.followGuidelines,
     "Will attend orientation": raw.attendOrientation,
     "Will work collaboratively": raw.collaborate,

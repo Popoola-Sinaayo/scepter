@@ -26,7 +26,6 @@ import { useRegistrationForm } from "./useRegistrationForm";
 export function AttendeeForm() {
   const { state, pending, formRef, resultRef, formAction, onSubmit, errors } =
     useRegistrationForm(registerAttendee);
-  const [heardAbout, setHeardAbout] = useState("");
   const [withChildren, setWithChildren] = useState("");
   const [needsAccessibility, setNeedsAccessibility] = useState("");
   const [inGroup, setInGroup] = useState("");
@@ -97,30 +96,14 @@ export function AttendeeForm() {
             placeholder="Select your age range"
             errors={errors.ageRange}
           />
-          <TextField
-            name="church"
-            label="Church or ministry affiliation"
-            requirement="optional"
-            errors={errors.church}
-          />
         </div>
         <ChoiceField
           name="heardAbout"
           label="How did you hear about CLAY Conference?"
           options={hearAboutOptions}
           layout="grid"
-          onChange={(value) => setHeardAbout(value)}
           errors={errors.heardAbout}
-        >
-          <Reveal show={heardAbout === "Other"}>
-            <TextField
-              name="heardAboutOther"
-              label="Please specify"
-              requirement="optional"
-              errors={errors.heardAboutOther}
-            />
-          </Reveal>
-        </ChoiceField>
+        />
       </FormSection>
 
       <FormSection step="B" title="Registration category">

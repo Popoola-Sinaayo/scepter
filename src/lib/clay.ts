@@ -10,7 +10,6 @@ export const clay = {
 
 export const yesNo = ["Yes", "No"] as const;
 export const yesNoDepends = ["Yes", "No", "Depends"] as const;
-export const yesNoNotSure = ["Yes", "No", "Not sure"] as const;
 export const yesNoNotApplicable = ["Yes", "No", "Not applicable"] as const;
 
 export const ageRanges = [
@@ -24,12 +23,11 @@ export const ageRanges = [
 ] as const;
 
 export const hearAboutOptions = [
-  "Church or ministry announcement",
-  "Friend or personal invitation",
+  "Friend or family member",
   "Social media",
   "Website",
+  "Billboard or flyer",
   "Pastor or ministry leader",
-  "Other",
 ] as const;
 
 // TODO: confirm the eligibility wording for Seniors and Ministers before publishing.
@@ -64,58 +62,32 @@ export const childAgeRanges = [
 export const maxVolunteerDepartments = 2;
 
 export const volunteerDepartments = [
-  "Protocol and Guest Relations",
-  "Ushering and Seating",
-  "Registration and Accreditation",
-  "Media and Communications",
+  "Protocol",
+  "Ushering",
+  "Registration",
+  "Media",
+  "Photography",
+  "Videography",
+  "Graphic Design",
+  "Motion Design",
   "Technical and Production",
-  "Music and Worship",
-  "Prayer and Intercession",
-  "Logistics and Operations",
-  "Welfare and Hospitality",
-  "Publicity and Marketing",
-  "Transport and Parking",
-  "Medical and First Aid",
+  "Music",
+  "Logistics",
+  "Welfare",
+  "Publicity",
+  "Transport",
+  "Medical",
   "Children's Ministry",
   "Sanitation",
   "Stage Management",
   "General Support",
 ] as const;
 
-export const volunteerSkills = [
-  "Event planning and coordination",
-  "Communication and customer service",
-  "Photography and videography",
-  "Graphic design and creative design",
-  "Social media management",
-  "Audio engineering and sound",
-  "Lighting and stage production",
-  "Singing and musical instruments",
-  "Administration and data entry",
-  "Logistics and transportation",
-  "Hospitality and catering",
-  "First aid or relevant medical qualifications",
-  "Security or safety experience",
-  "Children's work or safeguarding",
-  "Technical support and IT",
-  "Other",
-] as const;
-
-// TODO: replace with the confirmed dates for training, setup, rehearsals and the conference,
-// e.g. "Training — Saturday 7 November".
+// TODO: add the confirmed dates, e.g. "Volunteer training — Saturday 21 November".
 export const volunteerDays = [
   "Volunteer training",
   "Venue setup",
   "Rehearsals",
-  "Conference day 1",
-  "Conference day 2",
+  "Conference day",
   "Pack-down",
-] as const;
-
-// TODO: replace with the confirmed volunteer schedules.
-export const volunteerTimes = [
-  "Morning (8am – 12pm)",
-  "Afternoon (12pm – 4pm)",
-  "Evening (4pm – 9pm)",
-  "Flexible / any time",
 ] as const;

@@ -8,12 +8,9 @@ import {
   maxVolunteerDepartments,
   volunteerDays,
   volunteerDepartments,
-  volunteerSkills,
-  volunteerTimes,
   yesNo,
   yesNoDepends,
   yesNoNotApplicable,
-  yesNoNotSure,
 } from "@/lib/clay";
 import {
   ChoiceField,
@@ -33,13 +30,9 @@ export function VolunteerForm() {
     useRegistrationForm(registerVolunteer);
   const [volunteeredBefore, setVolunteeredBefore] = useState("");
   const [departments, setDepartments] = useState<string[]>([]);
-  const [skills, setSkills] = useState<string[]>([]);
-  const [otherDepartments, setOtherDepartments] = useState("");
-  const [needsAccessibility, setNeedsAccessibility] = useState("");
 
-  function toggle(setter: typeof setDepartments) {
-    return (value: string, checked: boolean) =>
-      setter((current) => (checked ? [...current, value] : current.filter((v) => v !== value)));
+  function toggleDepartment(value: string, checked: boolean) {
+    setDepartments((current) => (checked ? [...current, value] : current.filter((v) => v !== value)));
   }
 
   if (state.status === "success") {
@@ -141,52 +134,27 @@ export function VolunteerForm() {
           options={volunteerDepartments}
           selected={departments}
           maxSelected={maxVolunteerDepartments}
-          onChange={toggle(setDepartments)}
+          onChange={toggleDepartment}
           errors={errors.departments}
         />
-        <ChoiceField
-          name="skills"
-          label="What skills or experience can you contribute?"
-          hint="Select all that apply."
-          type="checkbox"
-          layout="grid"
-          options={volunteerSkills}
-          selected={skills}
-          onChange={toggle(setSkills)}
-          errors={errors.skills}
-        >
-          <Reveal show={skills.includes("Other")}>
-            <TextField
-              name="skillsOther"
-              label="Other skills"
-              requirement="optional"
-              errors={errors.skillsOther}
-            />
-          </Reveal>
-        </ChoiceField>
+        <TextField
+          name="otherArea"
+          label="Is there another area you would like to serve in that is not listed? Please specify."
+          requirement="optional"
+          errors={errors.otherArea}
+        />
+        <TextAreaField
+          name="otherSkills"
+          label="Do you have any other skills, qualifications or areas of expertise that could be useful to CLAY Conference beyond your selected department?"
+          requirement="optional"
+          errors={errors.otherSkills}
+        />
         <TextAreaField
           name="skillsDescription"
-          label="Briefly describe any relevant experience or skills you have."
+          label="Briefly describe what relevant skills or experiences you have for the department you selected."
           requirement="optional"
           errors={errors.skillsDescription}
         />
-        <ChoiceField
-          name="otherDepartments"
-          label="Are there any other departments you would be willing to support if needed?"
-          requirement="optional"
-          options={yesNo}
-          onChange={(value) => setOtherDepartments(value)}
-          errors={errors.otherDepartments}
-        >
-          <Reveal show={otherDepartments === "Yes"}>
-            <TextField
-              name="otherDepartmentsDetails"
-              label="Please specify"
-              requirement="optional"
-              errors={errors.otherDepartmentsDetails}
-            />
-          </Reveal>
-        </ChoiceField>
       </FormSection>
 
       <FormSection step="C" title="Availability and commitment">
@@ -198,15 +166,6 @@ export function VolunteerForm() {
           layout="grid"
           options={volunteerDays}
           errors={errors.availableDays}
-        />
-        <ChoiceField
-          name="availableTimes"
-          label="What times are you generally available?"
-          hint="Select all that apply."
-          type="checkbox"
-          layout="grid"
-          options={volunteerTimes}
-          errors={errors.availableTimes}
         />
         <ChoiceField
           name="trainingAvailability"
@@ -234,40 +193,7 @@ export function VolunteerForm() {
         />
       </FormSection>
 
-      <FormSection step="D" title="Practical arrangements">
-        <ChoiceField
-          name="transportAssistance"
-          label="Will you require transport assistance to and from the venue?"
-          options={yesNoNotSure}
-          errors={errors.transportAssistance}
-        />
-        <ChoiceField
-          name="needsAccessibility"
-          label="Do you have any accessibility requirements that would help you serve effectively?"
-          requirement="recommended"
-          options={yesNo}
-          onChange={(value) => setNeedsAccessibility(value)}
-          errors={errors.needsAccessibility}
-        >
-          <Reveal show={needsAccessibility === "Yes"}>
-            <TextField
-              name="accessibilityDetails"
-              label="What assistance would be helpful?"
-              maxLength={500}
-              errors={errors.accessibilityDetails}
-            />
-          </Reveal>
-        </ChoiceField>
-        <ChoiceField
-          name="hasWhatsApp"
-          label="Do you have access to a smartphone and WhatsApp for volunteer communication?"
-          requirement="recommended"
-          options={yesNo}
-          errors={errors.hasWhatsApp}
-        />
-      </FormSection>
-
-      <FormSection step="E" title="Volunteer conduct and safeguarding">
+      <FormSection step="D" title="Volunteer conduct and safeguarding">
         <ChoiceField
           name="followGuidelines"
           label="Are you willing to follow the conference's volunteer guidelines and instructions from your assigned team lead?"
@@ -300,7 +226,7 @@ export function VolunteerForm() {
         />
       </FormSection>
 
-      <FormSection step="F" title="Final confirmation">
+      <FormSection step="E" title="Final confirmation">
         <TextAreaField
           name="anythingElse"
           label="Is there anything else you would like the volunteer coordination team to know?"
