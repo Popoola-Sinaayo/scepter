@@ -6,7 +6,7 @@ Website for **The Scepter Christian Ministries**, built around the Formation The
 
 - **Next.js 16** (App Router, Server Actions)
 - **TypeScript**, **Tailwind CSS v4**
-- **Cormorant Garamond** (headlines, scripture) + **Roboto Condensed** (UI)
+- **Space Grotesk** (headlines, body and UI)
 - **Resend** for enquiry emails, **Brevo** for newsletter subscribers, **zod** for validation
 
 ## Pages

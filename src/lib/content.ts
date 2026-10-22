@@ -56,6 +56,10 @@ export const images = {
     src: "/images/ministry/fellowship-maroon.jpg",
     alt: "Precious Alo with a ministry partner, both smiling and giving thumbs up",
   },
+  clayRegister: {
+    src: "/images/ministry/clay-register.jpg",
+    alt: "A smiling speaker in a lime shirt leaning on a lectern with a microphone",
+  },
   clayVolunteers: {
     src: "/images/ministry/clay-volunteers.jpg",
     alt: "Seven smiling members of The Scepter community taking a group selfie, giving thumbs up",

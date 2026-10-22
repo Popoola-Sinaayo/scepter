@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { AttendeeForm } from "@/components/clay/AttendeeForm";
 import { Container } from "@/components/Container";
 import { PageHero } from "@/components/PageHero";
@@ -20,20 +19,14 @@ export default function ClayRegisterPage() {
         eyebrow={`${clay.title} · General attendance`}
         title="Register to attend."
         description={`Welcome to ${clay.title}, hosted by ${site.legalName}. We look forward to having you join us for this gathering.`}
-        image={images.teachingRoom.src}
-        imageAlt={images.teachingRoom.alt}
-        imagePosition="object-[center_30%]"
+        image={images.clayRegister.src}
+        imageAlt={images.clayRegister.alt}
+        imagePosition="object-[center_25%]"
+        logo={{ src: "/logos/claycon-logo-light.png", width: 326, height: 210 }}
       />
 
       <section className="py-20 sm:py-28">
         <Container narrow>
-          <Image
-            src="/logos/claycon-logo.png"
-            alt="CLAYCON"
-            width={326}
-            height={210}
-            className="mb-10 h-auto w-36 sm:w-44"
-          />
           <div className="mb-14 space-y-4 border-l-2 border-burgundy bg-cream p-7 text-base leading-7 text-ink/75 sm:p-9">
             <p>
               Kindly complete the registration form below to help us prepare for your attendance and

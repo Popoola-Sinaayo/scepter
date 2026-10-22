@@ -1,23 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Roboto_Condensed } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ogImage, siteKeywords } from "@/lib/seo";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const robotoCondensed = Roboto_Condensed({
-  variable: "--font-roboto-condensed",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -88,7 +79,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${robotoCondensed.variable} ${cormorant.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-paper font-display text-ink">
         <Navbar />

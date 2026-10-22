@@ -26,9 +26,9 @@
   --color-paper: var(--paper);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
-  --font-display: var(--font-roboto-condensed);
-  --font-sans: var(--font-roboto-condensed);
-  --font-serif: var(--font-cormorant);
+  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-space-grotesk);
+  --font-serif: var(--font-space-grotesk);
 }
 
 html {
@@ -39,7 +39,9 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-roboto-condensed), "Arial Narrow", sans-serif;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  /* Space Grotesk has no italic; render `italic` text upright instead of a faked slant. */
+  font-synthesis-style: none;
   overflow-x: clip;
 }
 
@@ -54,7 +56,7 @@ body {
 }
 
 .eyebrow {
-  font-family: var(--font-roboto-condensed), sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.22em;
