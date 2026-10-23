@@ -3,11 +3,9 @@
 import { z } from "zod";
 import {
   ageRanges,
-  childAgeRanges,
   clay,
   hearAboutOptions,
   maxVolunteerDepartments,
-  registrationCategoryValues,
   volunteerDays,
   volunteerDepartments,
   yesNo,
@@ -183,11 +181,6 @@ const attendeeSchema = z.object({
   country: field.choice(countries, "Please select your country."),
   ageRange: field.optionalChoice(ageRanges),
   heardAbout: field.choice(hearAboutOptions, "Please tell us how you heard about the conference."),
-  category: field.choice(registrationCategoryValues, "Please choose a registration category."),
-  inPerson: field.choice(yesNo),
-  withChildren: field.choice(yesNo),
-  childrenCount: field.optional(),
-  childrenAges: field.multi(childAgeRanges),
   needsAccessibility: field.choice(yesNo),
   accessibilityDetails: field.optional(500),
   futureUpdates: field.optionalChoice(yesNo),
@@ -211,11 +204,6 @@ export async function registerAttendee(
     country: text(formData, "country"),
     ageRange: text(formData, "ageRange"),
     heardAbout: text(formData, "heardAbout"),
-    category: text(formData, "category"),
-    inPerson: text(formData, "inPerson"),
-    withChildren: text(formData, "withChildren"),
-    childrenCount: text(formData, "childrenCount"),
-    childrenAges: list(formData, "childrenAges"),
     needsAccessibility: text(formData, "needsAccessibility"),
     accessibilityDetails: text(formData, "accessibilityDetails"),
     futureUpdates: text(formData, "futureUpdates"),
@@ -228,16 +216,6 @@ export async function registerAttendee(
   const errors: FieldErrors = parsed.success ? {} : z.flattenError(parsed.error).fieldErrors;
   const raw = parsed.success ? parsed.data : null;
 
-  const withChildren = text(formData, "withChildren") === "Yes";
-  const childrenCount = Number(text(formData, "childrenCount"));
-  if (withChildren) {
-    if (!Number.isInteger(childrenCount) || childrenCount < 1 || childrenCount > 20) {
-      addError(errors, "childrenCount", "Please enter how many children will accompany you (1–20).");
-    }
-    if (list(formData, "childrenAges").length === 0) {
-      addError(errors, "childrenAges", "Please select the age ranges of the children.");
-    }
-  }
   if (text(formData, "needsAccessibility") === "Yes" && !text(formData, "accessibilityDetails")) {
     addError(errors, "accessibilityDetails", "Please tell us what assistance would be helpful.");
   }
@@ -248,7 +226,6 @@ export async function registerAttendee(
   if (!raw || Object.keys(errors).length > 0) return invalid(errors);
 
   const reference = createReference();
-  const hasChildren = raw.withChildren === "Yes";
   const row: SheetRow = {
     Reference: reference,
     "Full name": raw.fullName,
@@ -258,11 +235,6 @@ export async function registerAttendee(
     Country: raw.country,
     "Age range": raw.ageRange,
     "Heard about CLAY via": raw.heardAbout,
-    "Registration category": raw.category,
-    "Attending in person": raw.inPerson,
-    "Attending with children": raw.withChildren,
-    "Number of children": hasChildren ? childrenCount : "",
-    "Children's age ranges": hasChildren ? raw.childrenAges.join(", ") : "",
     "Needs accessibility assistance": raw.needsAccessibility,
     "Accessibility details": raw.needsAccessibility === "Yes" ? raw.accessibilityDetails : "",
     "Future programme updates": raw.futureUpdates,
@@ -284,13 +256,11 @@ export async function registerAttendee(
       heading: `Thank you for registering, ${firstName}.`,
       html: `<p>You have been registered for <strong>${escapeHtml(clay.title)}</strong>.</p>
 ${eventDetailsHtml()}
-<p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}<br />
-<strong>Category:</strong> ${escapeHtml(raw.category)}<br />
-<strong>Attending in person:</strong> ${raw.inPerson}${hasChildren ? `<br /><strong>Children:</strong> ${childrenCount}` : ""}</p>
+<p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}</p>
 <p>Further information about the schedule and attendance arrangements will be communicated to you by email.</p>
 <p>We look forward to welcoming you!</p>
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
-      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYou have been registered for ${clay.title}.\n\n${eventDetailsText()}\n\nReference: ${reference}\nCategory: ${raw.category}\nAttending in person: ${raw.inPerson}${hasChildren ? `\nChildren: ${childrenCount}` : ""}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\nWe look forward to welcoming you!\n\n${site.legalName}`,
+      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYou have been registered for ${clay.title}.\n\n${eventDetailsText()}\n\nReference: ${reference}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\nWe look forward to welcoming you!\n\n${site.legalName}`,
     },
   });
 

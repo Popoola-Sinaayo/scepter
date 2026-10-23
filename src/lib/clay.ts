@@ -30,35 +30,6 @@ export const hearAboutOptions = [
   "Pastor or ministry leader",
 ] as const;
 
-// TODO: confirm the eligibility wording for Seniors and Ministers before publishing.
-export const registrationCategories = [
-  {
-    value: "General Attendance",
-    description: "Open to everyone attending the conference.",
-  },
-  {
-    value: "Seniors",
-    description: "For attendees aged 60 and above.",
-  },
-  {
-    value: "Ministers",
-    description: "For pastors, ministers and leaders currently serving in a church or ministry.",
-  },
-] as const;
-
-export const registrationCategoryValues = registrationCategories.map((c) => c.value) as [
-  (typeof registrationCategories)[number]["value"],
-  ...(typeof registrationCategories)[number]["value"][],
-];
-
-export const childAgeRanges = [
-  "Under 2 years",
-  "2–4 years",
-  "5–8 years",
-  "9–12 years",
-  "13–17 years",
-] as const;
-
 export const maxVolunteerDepartments = 2;
 
 export const volunteerDepartments = [

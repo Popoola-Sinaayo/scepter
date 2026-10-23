@@ -32,10 +32,7 @@ export default function ClayRegisterPage() {
               Kindly complete the registration form below to help us prepare for your attendance and
               provide a smooth conference experience.
             </p>
-            <p>
-              Please provide accurate information and select the registration category that best
-              describes you. If you will be attending with children, kindly indicate this in the form.
-            </p>
+            <p>Please provide accurate information so we can prepare for you.</p>
             <p className="font-serif text-xl italic text-ink">We look forward to welcoming you!</p>
           </div>
           <AttendeeForm />

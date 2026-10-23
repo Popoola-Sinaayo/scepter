@@ -2,14 +2,7 @@
 
 import { useState } from "react";
 import { registerAttendee } from "@/app/clay/actions";
-import {
-  ageRanges,
-  childAgeRanges,
-  clay,
-  hearAboutOptions,
-  registrationCategories,
-  yesNo,
-} from "@/lib/clay";
+import { ageRanges, clay, hearAboutOptions, yesNo } from "@/lib/clay";
 import { countries } from "@/lib/countries";
 import {
   ChoiceField,
@@ -26,7 +19,6 @@ import { useRegistrationForm } from "./useRegistrationForm";
 export function AttendeeForm() {
   const { state, pending, formRef, resultRef, formAction, onSubmit, errors } =
     useRegistrationForm(registerAttendee);
-  const [withChildren, setWithChildren] = useState("");
   const [needsAccessibility, setNeedsAccessibility] = useState("");
   const [inGroup, setInGroup] = useState("");
 
@@ -106,54 +98,7 @@ export function AttendeeForm() {
         />
       </FormSection>
 
-      <FormSection step="B" title="Registration category">
-        <ChoiceField
-          name="category"
-          label="Which category are you registering under?"
-          options={registrationCategories}
-          layout="stack"
-          errors={errors.category}
-        />
-      </FormSection>
-
-      <FormSection step="C" title="Attendance and logistics">
-        <ChoiceField
-          name="inPerson"
-          label="Will you be attending the conference in person?"
-          options={yesNo}
-          errors={errors.inPerson}
-        />
-        <ChoiceField
-          name="withChildren"
-          label="Will you be attending with children?"
-          options={yesNo}
-          onChange={(value) => setWithChildren(value)}
-          errors={errors.withChildren}
-        >
-          <Reveal show={withChildren === "Yes"}>
-            <div className="space-y-9">
-              <div className="max-w-xs">
-                <TextField
-                  name="childrenCount"
-                  label="How many children will accompany you?"
-                  type="number"
-                  inputMode="numeric"
-                  min={1}
-                  max={20}
-                  errors={errors.childrenCount}
-                />
-              </div>
-              <ChoiceField
-                name="childrenAges"
-                label="What are the age ranges of the children attending with you?"
-                hint="Select all that apply."
-                type="checkbox"
-                options={childAgeRanges}
-                errors={errors.childrenAges}
-              />
-            </div>
-          </Reveal>
-        </ChoiceField>
+      <FormSection step="B" title="Attendance and logistics">
         <ChoiceField
           name="needsAccessibility"
           label="Will you require any accessibility assistance?"
@@ -179,7 +124,7 @@ export function AttendeeForm() {
         />
       </FormSection>
 
-      <FormSection step="D" title="Conference-specific information">
+      <FormSection step="C" title="Conference-specific information">
         <ChoiceField
           name="firstTime"
           label="Is this your first time attending a programme organised by The Scepter Christian Ministries?"
