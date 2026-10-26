@@ -17,7 +17,7 @@ const paths = [
     href: "/clay/register",
     eyebrow: "Attend",
     title: "Register to attend",
-    body: "Register for general attendance and let us know a little about you so we can prepare for your arrival.",
+    body: "Register for general attendance. Let us know if you will be bringing children so we can prepare for you.",
     cta: "Register now",
   },
   {

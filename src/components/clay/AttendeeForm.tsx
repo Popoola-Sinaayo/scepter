@@ -100,6 +100,12 @@ export function AttendeeForm() {
 
       <FormSection step="B" title="Attendance and logistics">
         <ChoiceField
+          name="withChildren"
+          label="Will you be attending with children?"
+          options={yesNo}
+          errors={errors.withChildren}
+        />
+        <ChoiceField
           name="needsAccessibility"
           label="Will you require any accessibility assistance?"
           options={yesNo}

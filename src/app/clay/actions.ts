@@ -181,6 +181,7 @@ const attendeeSchema = z.object({
   country: field.choice(countries, "Please select your country."),
   ageRange: field.optionalChoice(ageRanges),
   heardAbout: field.choice(hearAboutOptions, "Please tell us how you heard about the conference."),
+  withChildren: field.choice(yesNo),
   needsAccessibility: field.choice(yesNo),
   accessibilityDetails: field.optional(500),
   futureUpdates: field.optionalChoice(yesNo),
@@ -204,6 +205,7 @@ export async function registerAttendee(
     country: text(formData, "country"),
     ageRange: text(formData, "ageRange"),
     heardAbout: text(formData, "heardAbout"),
+    withChildren: text(formData, "withChildren"),
     needsAccessibility: text(formData, "needsAccessibility"),
     accessibilityDetails: text(formData, "accessibilityDetails"),
     futureUpdates: text(formData, "futureUpdates"),
@@ -235,6 +237,7 @@ export async function registerAttendee(
     Country: raw.country,
     "Age range": raw.ageRange,
     "Heard about CLAY via": raw.heardAbout,
+    "Attending with children": raw.withChildren,
     "Needs accessibility assistance": raw.needsAccessibility,
     "Accessibility details": raw.needsAccessibility === "Yes" ? raw.accessibilityDetails : "",
     "Future programme updates": raw.futureUpdates,
@@ -256,11 +259,12 @@ export async function registerAttendee(
       heading: `Thank you for registering, ${firstName}.`,
       html: `<p>You have been registered for <strong>${escapeHtml(clay.title)}</strong>.</p>
 ${eventDetailsHtml()}
-<p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}</p>
+<p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}<br />
+<strong>Attending with children:</strong> ${raw.withChildren}</p>
 <p>Further information about the schedule and attendance arrangements will be communicated to you by email.</p>
 <p>We look forward to welcoming you!</p>
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
-      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYou have been registered for ${clay.title}.\n\n${eventDetailsText()}\n\nReference: ${reference}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\nWe look forward to welcoming you!\n\n${site.legalName}`,
+      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYou have been registered for ${clay.title}.\n\n${eventDetailsText()}\n\nReference: ${reference}\nAttending with children: ${raw.withChildren}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\nWe look forward to welcoming you!\n\n${site.legalName}`,
     },
   });
 
