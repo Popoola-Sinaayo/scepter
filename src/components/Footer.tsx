@@ -25,7 +25,7 @@ export function Footer() {
             {site.location ? <p>{site.location}</p> : null}
           </div>
           {socialLinks.length > 0 ? (
-            <div className="mt-6 flex items-center gap-4">
+            <div className="mt-6 flex flex-wrap items-center gap-4">
               {socialLinks.map((link) => (
                 <a
                   key={link.key}
@@ -33,9 +33,10 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={link.label}
+                  title={link.label}
                   className="text-cream/70 transition hover:text-cream"
                 >
-                  <SocialIcon name={link.key} />
+                  <SocialIcon name={link.icon} />
                 </a>
               ))}
             </div>

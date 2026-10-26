@@ -6,11 +6,11 @@ export type Scripture = {
 export const images = {
   founderPortrait: {
     src: "/images/ministry/founder-main.jpg",
-    alt: "Precious Alo, founder of The Scepter, in a burgundy double-breasted suit",
+    alt: "Pastor Precious Alo, founder of The Scepter, in a burgundy double-breasted suit",
   },
   founderStudio: {
     src: "/images/ministry/founder-portrait.jpg",
-    alt: "Precious Alo smiling in a cream suit in front of a wall of album artwork",
+    alt: "Pastor Precious Alo smiling in a cream suit in front of a wall of album artwork",
   },
   communityCover: {
     src: "/images/ministry/community-cover.jpg",
@@ -18,23 +18,23 @@ export const images = {
   },
   founderLectern: {
     src: "/images/ministry/founder-lectern.jpg",
-    alt: "Precious Alo teaching from a clear lectern with a tablet and microphone",
+    alt: "Pastor Precious Alo teaching from a clear lectern with a tablet and microphone",
   },
   founderSeated: {
     src: "/images/ministry/founder-seated.jpg",
-    alt: "Precious Alo seated and smiling during a gathering, hands clasped",
+    alt: "Pastor Precious Alo seated and smiling during a gathering, hands clasped",
   },
   preaching: {
     src: "/images/ministry/preaching-bw.jpg",
-    alt: "Precious Alo preaching with a microphone, pointing upward, in black and white",
+    alt: "Pastor Precious Alo preaching with a microphone, pointing upward, in black and white",
   },
   preachingGesture: {
     src: "/images/ministry/preaching-gesture.jpg",
-    alt: "Precious Alo preaching with an open hand, microphone raised, against a burgundy-lit curtain",
+    alt: "Pastor Precious Alo preaching with an open hand, microphone raised, against a burgundy-lit curtain",
   },
   teachingRoom: {
     src: "/images/ministry/teaching-room.jpg",
-    alt: "Precious Alo ministering to a room of young believers standing in worship",
+    alt: "Pastor Precious Alo ministering to a room of young believers standing in worship",
   },
   worshipLead: {
     src: "/images/ministry/worship-lead.jpg",
@@ -42,7 +42,7 @@ export const images = {
   },
   groupStage: {
     src: "/images/ministry/group-stage.jpg",
-    alt: "Precious Alo with four members of The Scepter community in front of a burgundy curtain",
+    alt: "Pastor Precious Alo with four members of The Scepter community in front of a burgundy curtain",
   },
   communityLineup: {
     src: "/images/ministry/community-lineup.jpg",
@@ -54,7 +54,7 @@ export const images = {
   },
   fellowshipMaroon: {
     src: "/images/ministry/fellowship-maroon.jpg",
-    alt: "Precious Alo with a ministry partner, both smiling and giving thumbs up",
+    alt: "Pastor Precious Alo with a ministry partner, both smiling and giving thumbs up",
   },
   clayRegister: {
     src: "/images/ministry/clay-register.jpg",
@@ -66,7 +66,7 @@ export const images = {
   },
   brothersDuo: {
     src: "/images/ministry/brothers-duo.jpg",
-    alt: "Precious Alo standing with a member of The Scepter community",
+    alt: "Pastor Precious Alo standing with a member of The Scepter community",
   },
 } as const;
 
@@ -289,11 +289,11 @@ export const institution = {
 };
 
 export const founder = {
-  name: "Precious Alo",
+  name: "Pastor Precious Alo",
   role: "Founder & Primary Visionary",
   // TODO: replace with the founder's own bio.
   bio: [
-    "Precious Alo is the founder and primary visionary of The Scepter Christian Ministries. He carries a burden to see believers move beyond conversion into formation, rising into their identity as kings and priests.",
+    "Pastor Precious Alo is the founder and primary visionary of The Scepter Christian Ministries. He carries a burden to see believers move beyond conversion into formation, rising into their identity as kings and priests.",
     "Through teaching, discipleship and gatherings, he stewards a vision of a generation formed at the altar and sent into every sphere of society as witnesses of Christ.",
   ],
   quote: "Formation precedes function. The altar precedes the throne.",

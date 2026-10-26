@@ -76,7 +76,7 @@ export default async function ContactPage({
               {socialLinks.length > 0 ? (
                 <div>
                   <p className="eyebrow text-ink/50">Follow</p>
-                  <div className="mt-4 flex items-center gap-5">
+                  <div className="mt-4 flex flex-wrap items-center gap-5">
                     {socialLinks.map((link) => (
                       <a
                         key={link.key}
@@ -84,9 +84,10 @@ export default async function ContactPage({
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={link.label}
+                        title={link.label}
                         className="text-ink/70 transition hover:text-burgundy"
                       >
-                        <SocialIcon name={link.key} className="size-6" />
+                        <SocialIcon name={link.icon} className="size-6" />
                       </a>
                     ))}
                   </div>

@@ -3,7 +3,7 @@ import { Container } from "@/components/Container";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
-import { SocialIcon } from "@/components/SocialIcon";
+import { SocialIcon, type SocialIconName } from "@/components/SocialIcon";
 import { images, teachings } from "@/lib/content";
 import { createMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -15,26 +15,59 @@ export const metadata = createMetadata({
   path: "/teachings",
 });
 
-const channels = [
+type Channel = {
+  key: string;
+  icon: SocialIconName;
+  title: string;
+  description: string;
+  href?: string;
+  /** Several destinations; rendered as links instead of making the whole card a link. */
+  links?: { label: string; href: string }[];
+  className?: string;
+};
+
+const channels: Channel[] = [
   {
     key: "youtube",
+    icon: "youtube",
     title: "Sermons & teaching series",
-    description: "Full messages and teaching series on YouTube.",
+    description: "Full messages and teaching series on The Scepter's YouTube channel.",
     href: site.social.youtube,
   },
   {
+    key: "pastorYoutube",
+    icon: "youtube",
+    title: site.founder,
+    description: `Messages and teaching from ${site.founder} on his YouTube channel.`,
+    href: site.social.pastorYoutube,
+  },
+  {
     key: "instagram",
+    icon: "instagram",
     title: "Teaching slides & moments",
     description: "Daily doctrine, slides and highlights on Instagram.",
     href: site.social.instagram,
   },
   {
     key: "podcast",
+    icon: "podcast",
     title: "Podcast",
-    description: "Listen to teachings wherever you are.",
-    href: site.social.podcast,
+    description: "Listen to teachings wherever you are, on your favourite platform.",
+    links: [
+      { label: "Spotify", href: site.social.spotify },
+      { label: "Apple Podcasts", href: site.social.applePodcasts },
+      { label: "Audiomack", href: site.social.audiomack },
+    ].filter((link) => link.href !== ""),
+    className: "md:col-span-2",
   },
-] as const;
+  {
+    key: "substack",
+    icon: "substack",
+    title: "Writing",
+    description: "Essays and reflections on formation on Substack.",
+    href: site.social.substack,
+  },
+];
 
 export default function TeachingsPage() {
   return (
@@ -58,24 +91,46 @@ export default function TeachingsPage() {
           </Reveal>
           <div className="mt-14 grid gap-5 md:grid-cols-3">
             {channels.map((channel, index) => {
+              const linkClass =
+                "text-sm font-bold uppercase tracking-[0.14em] text-burgundy transition hover:text-burgundy-deep";
               const content = (
                 <>
-                  <SocialIcon name={channel.key} className="size-8 text-burgundy" />
+                  <SocialIcon name={channel.icon} className="size-8 text-burgundy" />
                   <h3 className="mt-6 font-serif text-3xl font-semibold leading-tight text-ink">
                     {channel.title}
                   </h3>
                   <p className="mt-3 flex-1 text-base leading-7 text-ink/70">
                     {channel.description}
                   </p>
-                  <span className="mt-8 text-sm font-bold uppercase tracking-[0.14em] text-burgundy">
-                    {channel.href ? <>Open &rarr;</> : "Coming soon"}
-                  </span>
+                  {channel.links?.length ? (
+                    <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+                      {channel.links.map((link) => (
+                        <a
+                          key={link.href}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={linkClass}
+                        >
+                          {link.label}&nbsp;&rarr;
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className={`mt-8 ${linkClass}`}>
+                      {channel.href ? <>Open &rarr;</> : "Coming soon"}
+                    </span>
+                  )}
                 </>
               );
               const className =
                 "flex h-full flex-col border border-ink/10 bg-cream p-8 transition duration-300";
               return (
-                <Reveal key={channel.key} delayMs={index * 100} className="h-full">
+                <Reveal
+                  key={channel.key}
+                  delayMs={index * 100}
+                  className={`h-full ${channel.className ?? ""}`}
+                >
                   {channel.href ? (
                     <a
                       href={channel.href}

@@ -83,7 +83,10 @@ export default function HomePage() {
             witnesses of Christ.
           </p>
           <div className="hero-enter hero-enter-delay-4 mt-10 flex flex-col gap-4 sm:flex-row">
-            <Button href="/doctrine">Our doctrine</Button>
+            <Button href="/clay/register">Register for CLAYCON 2026</Button>
+            <Button href="/doctrine" variant="outline-light">
+              Our doctrine
+            </Button>
             <Button href="/contact" variant="outline-light">
               Make an enquiry
             </Button>

@@ -13,6 +13,7 @@ export const ogImage = {
 export const siteKeywords = [
   "The Scepter",
   "The Scepter Christian Ministries",
+  "Pastor Precious Alo",
   "Precious Alo",
   "Christian formation",
   "kings and priests",
