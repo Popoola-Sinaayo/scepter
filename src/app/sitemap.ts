@@ -7,6 +7,7 @@ const routes = [
   { path: "/doctrine", changeFrequency: "monthly" as const, priority: 0.9 },
   { path: "/formation", changeFrequency: "monthly" as const, priority: 0.9 },
   { path: "/teachings", changeFrequency: "weekly" as const, priority: 0.8 },
+  { path: "/give", changeFrequency: "monthly" as const, priority: 0.8 },
   { path: "/contact", changeFrequency: "yearly" as const, priority: 0.6 },
   { path: "/clay", changeFrequency: "weekly" as const, priority: 0.8 },
   { path: "/clay/register", changeFrequency: "weekly" as const, priority: 0.7 },

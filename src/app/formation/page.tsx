@@ -16,6 +16,7 @@ import {
   vision,
 } from "@/lib/content";
 import { createMetadata } from "@/lib/seo";
+import { site } from "@/lib/site";
 
 export const metadata = createMetadata({
   title: "Formation",
@@ -161,7 +162,7 @@ export default function FormationPage() {
         eyebrow="Not in a hurry"
         title="We are building for centuries."
         body="If you sense a call to be formed, not just inspired, we would love to walk with you."
-        primary={{ href: "/contact", label: "Make an enquiry" }}
+        primary={{ href: site.joinUrl, label: "Join The Scepter" }}
         secondary={{ href: "/teachings", label: "Explore teachings" }}
       />
     </>

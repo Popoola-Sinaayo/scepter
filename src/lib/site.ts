@@ -8,8 +8,9 @@ export const site = {
   founder: "Pastor Precious Alo",
   // TODO: confirm the real ministry inbox.
   email: "info@thescepterglobal.org",
-  // TODO: replace with the real phone number, or set to "" to hide it.
-  phone: "" as string,
+  phone: "+234 707 160 3588" as string,
+  // Sign-up form for people who want to join (from the Linktree).
+  joinUrl: "https://bit.ly/JoinTheScepter",
   // TODO: replace with the real city / venue, or leave empty to hide it.
   location: "" as string,
   copyrightYear: new Date().getFullYear(),
@@ -34,6 +35,7 @@ export const navLinks = [
   { href: "/doctrine", label: "Doctrine" },
   { href: "/formation", label: "Formation" },
   { href: "/teachings", label: "Teachings" },
+  { href: "/give", label: "Give" },
 ] as const;
 
 export const quickLinks = [
@@ -42,6 +44,8 @@ export const quickLinks = [
   { href: "/formation", label: "Formation" },
   { href: "/formation#gatherings", label: "Gatherings" },
   { href: "/teachings", label: "Teachings" },
+  { href: "/clay", label: "CLAY Conference" },
+  { href: "/give", label: "Partner with us" },
   { href: "/contact", label: "Contact" },
 ] as const;
 

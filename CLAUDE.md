@@ -20,7 +20,7 @@ There is no test suite. To check a change, run lint and the type-check, then try
 ```
 src/app/                 App Router pages (all server components)
   layout.tsx             Root layout: Space Grotesk font, Navbar, Footer, site-wide metadata
-  page.tsx, about/, doctrine/, formation/, teachings/, contact/
+  page.tsx, about/, doctrine/, formation/, teachings/, give/, contact/
   clay/                  Conference landing, register/, volunteer/
   clay/actions.ts        Server actions registerAttendee / registerVolunteer
   contact/actions.ts     Server action sendEnquiry (Resend only)

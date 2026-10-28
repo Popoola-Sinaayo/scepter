@@ -30,6 +30,14 @@ export function Button({
 }: ButtonProps) {
   const classes = `inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.14em] transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 disabled:pointer-events-none disabled:opacity-60 sm:px-9 sm:py-4 ${variants[variant]} ${className}`;
 
+  if (href && /^https?:\/\//.test(href)) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+        {children}
+      </a>
+    );
+  }
+
   if (href) {
     return (
       <Link href={href} className={classes}>

@@ -21,7 +21,14 @@ export function Footer() {
             >
               {site.email}
             </a>
-            {site.phone ? <p>{site.phone}</p> : null}
+            {site.phone ? (
+              <a
+                href={`tel:${site.phone.replace(/\s/g, "")}`}
+                className="block transition hover:text-cream"
+              >
+                {site.phone}
+              </a>
+            ) : null}
             {site.location ? <p>{site.location}</p> : null}
           </div>
           {socialLinks.length > 0 ? (

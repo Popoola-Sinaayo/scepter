@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { Button } from "./Button";
-import { navLinks } from "@/lib/site";
+import { navLinks, site } from "@/lib/site";
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -55,8 +55,8 @@ export function Navbar() {
         </nav>
 
         <div className="hidden lg:block">
-          <Button href="/contact" className="!px-7 !py-3">
-            Enquire
+          <Button href={site.joinUrl} className="!px-7 !py-3">
+            Join us
           </Button>
         </div>
 
@@ -102,8 +102,11 @@ export function Navbar() {
                 </Link>
               );
             })}
-            <Button href="/contact" className="mt-8 w-full">
-              Make an enquiry
+            <Button href={site.joinUrl} className="mt-8 w-full">
+              Join The Scepter
+            </Button>
+            <Button href="/clay/register" variant="outline-light" className="mt-4 w-full">
+              Register for CLAYCON 2026
             </Button>
           </nav>
         </div>

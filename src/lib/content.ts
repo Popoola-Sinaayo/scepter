@@ -335,3 +335,14 @@ export type Teaching = {
 
 // Add teachings here as they are published, newest first.
 export const teachings: Teaching[] = [];
+
+export const giving = {
+  bank: "Access Bank",
+  accountName: "The Scepter Christian Ministries",
+  accounts: [
+    { currency: "NGN", label: "Naira", number: "1975232212" },
+    { currency: "USD", label: "US Dollar", number: "1977676087" },
+    { currency: "GBP", label: "British Pound", number: "1977732091" },
+    { currency: "EUR", label: "Euro", number: "1977771920" },
+  ],
+} as const;

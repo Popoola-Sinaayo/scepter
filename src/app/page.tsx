@@ -82,14 +82,17 @@ export default function HomePage() {
             priests: shaped at the altar, deployed into every sphere of life as
             witnesses of Christ.
           </p>
-          <div className="hero-enter hero-enter-delay-4 mt-10 flex flex-col gap-4 sm:flex-row">
-            <Button href="/clay/register">Register for CLAYCON 2026</Button>
-            <Button href="/doctrine" variant="outline-light">
-              Our doctrine
+          <div className="hero-enter hero-enter-delay-4 mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <Button href={site.joinUrl}>Join The Scepter</Button>
+            <Button href="/clay/register" variant="outline-light">
+              Register for CLAYCON 2026
             </Button>
-            <Button href="/contact" variant="outline-light">
-              Make an enquiry
-            </Button>
+            <Link
+              href="/doctrine"
+              className="px-2 py-2 text-center text-sm font-bold uppercase tracking-[0.14em] text-cream/75 transition hover:text-cream sm:text-left"
+            >
+              Our doctrine &rarr;
+            </Link>
           </div>
         </Container>
       </section>
@@ -317,9 +320,9 @@ export default function HomePage() {
       <CTABand
         eyebrow="Begin your formation"
         title="Go deep before going wide."
-        body="Whether you want to join a cohort, invite the ministry, or simply ask a question, we would love to hear from you."
-        primary={{ href: "/contact", label: "Make an enquiry" }}
-        secondary={{ href: "/formation#gatherings", label: "Gatherings & cohorts" }}
+        body="Join The Scepter community to be formed in your identity as a king and priest, or partner with us as we build for generations."
+        primary={{ href: site.joinUrl, label: "Join The Scepter" }}
+        secondary={{ href: "/give", label: "Partner with us" }}
       />
     </>
   );
