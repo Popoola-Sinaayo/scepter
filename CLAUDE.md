@@ -21,8 +21,8 @@ There is no test suite. To check a change, run lint and the type-check, then try
 src/app/                 App Router pages (all server components)
   layout.tsx             Root layout: Space Grotesk font, Navbar, Footer, site-wide metadata
   page.tsx, about/, doctrine/, formation/, teachings/, give/, contact/
-  clay/                  Conference landing, register/, volunteer/
-  clay/actions.ts        Server actions registerAttendee / registerVolunteer
+  claycon/               Conference landing, register/, volunteer/ (old /clay links redirect here)
+  claycon/actions.ts     Server actions registerAttendee / registerVolunteer
   contact/actions.ts     Server action sendEnquiry (Resend only)
   actions/subscribe.ts   Server action subscribe (footer newsletter → Brevo)
   sitemap.ts, robots.ts  Hand-maintained route list: add new pages here
@@ -64,7 +64,7 @@ All three actions follow the same pattern. Each takes `(prevState, formData)`, r
 ### Adding or changing a CLAY question
 
 1. Add the option list to `src/lib/clay.ts` if the field is a choice (`as const` tuples; `zod` enums are built from them).
-2. Add the field to the schema in `src/app/clay/actions.ts`, the `safeParse` input, and the `row` object (the key becomes a new sheet column). The Apps Script adds missing header columns automatically, so the sheet needs no manual changes.
+2. Add the field to the schema in `src/app/claycon/actions.ts`, the `safeParse` input, and the `row` object (the key becomes a new sheet column). The Apps Script adds missing header columns automatically, so the sheet needs no manual changes.
 3. Add the input to `AttendeeForm.tsx` / `VolunteerForm.tsx` using the primitives in `components/clay/FormFields.tsx`. The primitives are `FormSection`, `TextField`, `TextAreaField`, `SelectField`, `ChoiceField` (radio or checkbox), `ConsentField`, the conditional `Reveal show={…}` wrapper (a different component from `components/Reveal`) and `Honeypot`. Pass `errors={errors.<name>}`. Conditional sections are controlled with local `useState` in the form.
 
 `useRegistrationForm` submits through `onSubmit` + `startTransition`, which stops React 19 from resetting the form after a server error. It also passes `formAction` to `<form action>` so a submit before hydration still POSTs. After a submit it scrolls to the first `[data-invalid]` field, or on success to the result panel. Keep both of these behaviours when you change the forms.

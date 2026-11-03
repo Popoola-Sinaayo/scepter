@@ -8,12 +8,15 @@ export function RegistrationComplete({
   eyebrow,
   title,
   reference,
+  inviteToVolunteer = false,
   children,
 }: {
   resultRef: Ref<HTMLDivElement>;
   eyebrow: string;
   title: string;
   reference?: string;
+  /** Shown after attendee registration: offer the volunteer form too. */
+  inviteToVolunteer?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -46,8 +49,36 @@ export function RegistrationComplete({
           Your reference: <span className="font-bold tracking-wider text-ink">{reference}</span>
         </p>
       ) : null}
+      {clay.whatsappUrl || inviteToVolunteer ? (
+        <div className="mt-8 grid gap-4 border-t border-ink/10 pt-8 sm:grid-cols-2">
+          {clay.whatsappUrl ? (
+            <div className="flex flex-col bg-paper p-6">
+              <p className="eyebrow text-burgundy">Stay connected</p>
+              <p className="mt-2 flex-1 text-base leading-7 text-ink/75">
+                Would you like to join our WhatsApp community for closer updates about the
+                conference?
+              </p>
+              <Button href={clay.whatsappUrl} className="mt-5 self-start">
+                Join on WhatsApp
+              </Button>
+            </div>
+          ) : null}
+          {inviteToVolunteer ? (
+            <div className="flex flex-col bg-paper p-6">
+              <p className="eyebrow text-burgundy">Serve with us</p>
+              <p className="mt-2 flex-1 text-base leading-7 text-ink/75">
+                Would you also like to volunteer at {clay.shortTitle}? Register to serve in one of
+                our departments.
+              </p>
+              <Button href="/claycon/volunteer" variant="outline" className="mt-5 self-start">
+                Register to volunteer
+              </Button>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
       <div className="mt-8">
-        <Button href="/clay" variant="outline">
+        <Button href="/claycon" variant="outline">
           Back to CLAY 2026
         </Button>
       </div>

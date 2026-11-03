@@ -1,7 +1,7 @@
 "use client";
 
 import { startTransition, useActionState, useEffect, useRef, type FormEvent } from "react";
-import type { RegistrationState } from "@/app/clay/actions";
+import type { RegistrationState } from "@/app/claycon/actions";
 
 type RegistrationAction = (state: RegistrationState, formData: FormData) => Promise<RegistrationState>;
 

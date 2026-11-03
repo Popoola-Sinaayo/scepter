@@ -105,7 +105,7 @@ export function Navbar() {
             <Button href={site.joinUrl} className="mt-8 w-full">
               Join The Scepter
             </Button>
-            <Button href="/clay/register" variant="outline-light" className="mt-4 w-full">
+            <Button href="/claycon/register" variant="outline-light" className="mt-4 w-full">
               Register for CLAYCON 2026
             </Button>
           </nav>

@@ -98,7 +98,7 @@ export default function GivePage() {
         title="More than giving: be formed with us."
         body="Join The Scepter community and grow in your identity and function as a king and priest."
         primary={{ href: site.joinUrl, label: "Join The Scepter" }}
-        secondary={{ href: "/clay/register", label: "Register for CLAYCON 2026" }}
+        secondary={{ href: "/claycon/register", label: "Register for CLAYCON 2026" }}
       />
     </>
   );

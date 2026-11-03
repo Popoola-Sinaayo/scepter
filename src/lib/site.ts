@@ -4,7 +4,7 @@ export const site = {
   tagline: "Formed to reign. Sent to witness.",
   description:
     "The Scepter Christian Ministries forms believers into their identity and function as kings and priests: formed at the altar, deployed into every sphere as witnesses of Christ.",
-  url: "https://thescepterglobal.com",
+  url: "https://thescepterglobal.org",
   founder: "Pastor Precious Alo",
   // TODO: confirm the real ministry inbox.
   email: "info@thescepterglobal.org",
@@ -44,7 +44,7 @@ export const quickLinks = [
   { href: "/formation", label: "Formation" },
   { href: "/formation#gatherings", label: "Gatherings" },
   { href: "/teachings", label: "Teachings" },
-  { href: "/clay", label: "CLAY Conference" },
+  { href: "/claycon", label: "CLAY Conference" },
   { href: "/give", label: "Partner with us" },
   { href: "/contact", label: "Contact" },
 ] as const;

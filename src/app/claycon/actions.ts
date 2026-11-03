@@ -5,7 +5,6 @@ import {
   ageRanges,
   clay,
   hearAboutOptions,
-  maxVolunteerDepartments,
   volunteerDays,
   volunteerDepartments,
   yesNo,
@@ -80,6 +79,36 @@ function eventDetailsText() {
   return [clay.shortTitle, clay.dates ? `📅 ${clay.dates}` : "", clay.venue ? `📍 ${clay.venue}` : ""]
     .filter(Boolean)
     .join("\n");
+}
+
+const volunteerUrl = `${site.url}/claycon/volunteer`;
+const buttonStyle =
+  "display:inline-block;padding:10px 20px;background:#9e2b2b;color:#fdf8ec;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;";
+
+/** WhatsApp community invite (and, for attendees, an invite to volunteer) for confirmation emails. */
+function nextStepsHtml({ inviteToVolunteer }: { inviteToVolunteer: boolean }) {
+  const blocks = [
+    clay.whatsappUrl
+      ? `<p>Would you like to join our WhatsApp community for closer updates about the conference?</p>
+<p><a href="${escapeHtml(clay.whatsappUrl)}" style="${buttonStyle}">Join on WhatsApp</a></p>`
+      : "",
+    inviteToVolunteer
+      ? `<p>Would you also like to volunteer at ${escapeHtml(clay.shortTitle)}? <a href="${volunteerUrl}" style="color:#9e2b2b;font-weight:bold;">Register to volunteer</a>.</p>`
+      : "",
+  ].filter(Boolean);
+  return blocks.join("\n");
+}
+
+function nextStepsText({ inviteToVolunteer }: { inviteToVolunteer: boolean }) {
+  return [
+    clay.whatsappUrl
+      ? `Would you like to join our WhatsApp community for closer updates? ${clay.whatsappUrl}`
+      : "",
+    inviteToVolunteer ? `Would you also like to volunteer at ${clay.shortTitle}? ${volunteerUrl}` : "",
+  ]
+    .filter(Boolean)
+    .map((line) => `${line}\n\n`)
+    .join("");
 }
 
 function rowToHtml(row: SheetRow) {
@@ -262,9 +291,10 @@ ${eventDetailsHtml()}
 <p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}<br />
 <strong>Attending with children:</strong> ${raw.withChildren}</p>
 <p>Further information about the schedule and attendance arrangements will be communicated to you by email.</p>
+${nextStepsHtml({ inviteToVolunteer: true })}
 <p>We look forward to welcoming you!</p>
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
-      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYou have been registered for ${clay.title}.\n\n${eventDetailsText()}\n\nReference: ${reference}\nAttending with children: ${raw.withChildren}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\nWe look forward to welcoming you!\n\n${site.legalName}`,
+      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYou have been registered for ${clay.title}.\n\n${eventDetailsText()}\n\nReference: ${reference}\nAttending with children: ${raw.withChildren}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\n${nextStepsText({ inviteToVolunteer: true })}We look forward to welcoming you!\n\n${site.legalName}`,
     },
   });
 
@@ -283,9 +313,7 @@ const volunteerSchema = z.object({
   churchReference: field.optional(),
   volunteeredBefore: field.choice(yesNo),
   experience: field.optional(2000),
-  departments: field
-    .multi(volunteerDepartments, "Please select at least one department.")
-    .max(maxVolunteerDepartments, `Please select no more than ${maxVolunteerDepartments} departments.`),
+  department: field.choice(volunteerDepartments, "Please select a department."),
   otherArea: field.optional(),
   otherSkills: field.optional(2000),
   skillsDescription: field.optional(2000),
@@ -319,7 +347,7 @@ export async function registerVolunteer(
     churchReference: text(formData, "churchReference"),
     volunteeredBefore: text(formData, "volunteeredBefore"),
     experience: text(formData, "experience"),
-    departments: list(formData, "departments"),
+    department: text(formData, "department"),
     otherArea: text(formData, "otherArea"),
     otherSkills: text(formData, "otherSkills"),
     skillsDescription: text(formData, "skillsDescription"),
@@ -358,7 +386,8 @@ export async function registerVolunteer(
     "Church leader or reference": raw.churchReference,
     "Volunteered before": raw.volunteeredBefore,
     "Volunteering experience": raw.volunteeredBefore === "Yes" ? raw.experience : "",
-    "Preferred departments": raw.departments.join(", "),
+    // Header kept from when two departments could be chosen, so answers stay in one column.
+    "Preferred departments": raw.department,
     "Other area to serve": raw.otherArea,
     "Other skills or qualifications": raw.otherSkills,
     "Skills for selected department": raw.skillsDescription,
@@ -390,10 +419,11 @@ export async function registerVolunteer(
 <p>Your volunteer registration has been received. Our volunteer coordination team will review your preferences, skills and availability and communicate the next steps.</p>
 ${eventDetailsHtml()}
 <p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}<br />
-<strong>Preferred departments:</strong> ${escapeHtml(raw.departments.join(", "))}</p>
+<strong>Preferred department:</strong> ${escapeHtml(raw.department)}</p>
+${nextStepsHtml({ inviteToVolunteer: false })}
 <p>We appreciate your heart to serve and look forward to connecting with you!</p>
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
-      text: `Thank you, ${raw.fullName.split(" ")[0]}.\n\nThank you for your willingness to serve at ${clay.title}.\n\nYour volunteer registration has been received. Our volunteer coordination team will review your preferences, skills and availability and communicate the next steps.\n\n${eventDetailsText()}\n\nReference: ${reference}\nPreferred departments: ${raw.departments.join(", ")}\n\nWe appreciate your heart to serve and look forward to connecting with you!\n\n${site.legalName}`,
+      text: `Thank you, ${raw.fullName.split(" ")[0]}.\n\nThank you for your willingness to serve at ${clay.title}.\n\nYour volunteer registration has been received. Our volunteer coordination team will review your preferences, skills and availability and communicate the next steps.\n\n${eventDetailsText()}\n\nReference: ${reference}\nPreferred department: ${raw.department}\n\n${nextStepsText({ inviteToVolunteer: false })}We appreciate your heart to serve and look forward to connecting with you!\n\n${site.legalName}`,
     },
   });
 

@@ -9,19 +9,19 @@ import { site } from "@/lib/site";
 export const metadata = createMetadata({
   title: clay.title,
   description: `Register to attend or volunteer at ${clay.title}, hosted by ${site.legalName}.`,
-  path: "/clay",
+  path: "/claycon",
 });
 
 const paths = [
   {
-    href: "/clay/register",
+    href: "/claycon/register",
     eyebrow: "Attend",
     title: "Register to attend",
     body: "Register for general attendance. Let us know if you will be bringing children so we can prepare for you.",
     cta: "Register now",
   },
   {
-    href: "/clay/volunteer",
+    href: "/claycon/volunteer",
     eyebrow: "Serve",
     title: "Volunteer to serve",
     body: "Give your time, skills and energy to help create a well-organised, welcoming and impactful conference.",

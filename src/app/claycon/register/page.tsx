@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
 export const metadata = createMetadata({
   title: `Register | ${clay.title}`,
   description: `Register to attend ${clay.title}, hosted by ${site.legalName}.`,
-  path: "/clay/register",
+  path: "/claycon/register",
 });
 
 export default function ClayRegisterPage() {

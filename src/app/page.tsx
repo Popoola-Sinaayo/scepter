@@ -82,10 +82,13 @@ export default function HomePage() {
             priests: shaped at the altar, deployed into every sphere of life as
             witnesses of Christ.
           </p>
-          <div className="hero-enter hero-enter-delay-4 mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="hero-enter hero-enter-delay-4 mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
             <Button href={site.joinUrl}>Join The Scepter</Button>
-            <Button href="/clay/register" variant="outline-light">
+            <Button href="/claycon/register" variant="outline-light">
               Register for CLAYCON 2026
+            </Button>
+            <Button href="/claycon/volunteer" variant="outline-light">
+              Volunteer at CLAYCON
             </Button>
             <Link
               href="/doctrine"

@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/sermons", destination: "/teachings", permanent: true },
       { source: "/blog", destination: "/teachings", permanent: true },
-      // Shared CLAYCON links (e.g. /claycon/register) land on the CLAY pages.
-      { source: "/claycon/:path*", destination: "/clay/:path*", permanent: false },
+      // The CLAY pages moved to /claycon; keep old /clay links (e.g. /clay/register) working.
+      { source: "/clay/:path*", destination: "/claycon/:path*", permanent: false },
     ];
   },
 };

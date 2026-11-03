@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { registerAttendee } from "@/app/clay/actions";
+import { registerAttendee } from "@/app/claycon/actions";
 import { ageRanges, clay, hearAboutOptions, yesNo } from "@/lib/clay";
 import { countries } from "@/lib/countries";
 import {
@@ -29,6 +29,7 @@ export function AttendeeForm() {
         eyebrow="Registration received"
         title={`Thank you for registering for ${clay.title}`}
         reference={state.reference}
+        inviteToVolunteer
       >
         <p>
           Your registration details have been received. Further information about the schedule and

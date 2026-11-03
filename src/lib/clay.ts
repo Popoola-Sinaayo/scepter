@@ -6,6 +6,8 @@ export const clay = {
   // Empty values are hidden.
   dates: "November 28th, 2026" as string,
   venue: "Solution Arena, 156 Ikorodu Road, Onipanu, Lagos" as string,
+  // WhatsApp community for closer updates, shown after registering. Empty hides it.
+  whatsappUrl: "https://chat.whatsapp.com/G5bQgpqA6DUJERwYUZdNCV?mode=gi_t" as string,
 } as const;
 
 export const yesNo = ["Yes", "No"] as const;
@@ -30,13 +32,11 @@ export const hearAboutOptions = [
   "Pastor or ministry leader",
 ] as const;
 
-export const maxVolunteerDepartments = 2;
-
 export const volunteerDepartments = [
   "Protocol",
   "Ushering",
   "Registration",
-  "Media",
+  "Social Media & Content",
   "Photography",
   "Videography",
   "Graphic Design",
@@ -45,6 +45,7 @@ export const volunteerDepartments = [
   "Music",
   "Logistics",
   "Welfare",
+  "Hospitality",
   "Publicity",
   "Transport",
   "Medical",

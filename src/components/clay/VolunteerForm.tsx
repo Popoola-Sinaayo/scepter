@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { registerVolunteer } from "@/app/clay/actions";
+import { registerVolunteer } from "@/app/claycon/actions";
 import {
   ageRanges,
   clay,
-  maxVolunteerDepartments,
   volunteerDays,
   volunteerDepartments,
   yesNo,
@@ -29,11 +28,6 @@ export function VolunteerForm() {
   const { state, pending, formRef, resultRef, formAction, onSubmit, errors } =
     useRegistrationForm(registerVolunteer);
   const [volunteeredBefore, setVolunteeredBefore] = useState("");
-  const [departments, setDepartments] = useState<string[]>([]);
-
-  function toggleDepartment(value: string, checked: boolean) {
-    setDepartments((current) => (checked ? [...current, value] : current.filter((v) => v !== value)));
-  }
 
   if (state.status === "success") {
     return (
@@ -126,16 +120,12 @@ export function VolunteerForm() {
 
       <FormSection step="B" title="Department and skills">
         <ChoiceField
-          name="departments"
+          name="department"
           label="Which department would you be interested in serving with?"
-          hint={`Select up to ${maxVolunteerDepartments} preferred departments.`}
-          type="checkbox"
+          hint="Select one department."
           layout="grid"
           options={volunteerDepartments}
-          selected={departments}
-          maxSelected={maxVolunteerDepartments}
-          onChange={toggleDepartment}
-          errors={errors.departments}
+          errors={errors.department}
         />
         <TextField
           name="otherArea"

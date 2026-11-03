@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
 export const metadata = createMetadata({
   title: `Volunteer | ${clay.title}`,
   description: `Volunteer to serve at ${clay.title}, hosted by ${site.legalName}.`,
-  path: "/clay/volunteer",
+  path: "/claycon/volunteer",
 });
 
 export default function ClayVolunteerPage() {

@@ -9,9 +9,9 @@ const routes = [
   { path: "/teachings", changeFrequency: "weekly" as const, priority: 0.8 },
   { path: "/give", changeFrequency: "monthly" as const, priority: 0.8 },
   { path: "/contact", changeFrequency: "yearly" as const, priority: 0.6 },
-  { path: "/clay", changeFrequency: "weekly" as const, priority: 0.8 },
-  { path: "/clay/register", changeFrequency: "weekly" as const, priority: 0.7 },
-  { path: "/clay/volunteer", changeFrequency: "weekly" as const, priority: 0.6 },
+  { path: "/claycon", changeFrequency: "weekly" as const, priority: 0.8 },
+  { path: "/claycon/register", changeFrequency: "weekly" as const, priority: 0.7 },
+  { path: "/claycon/volunteer", changeFrequency: "weekly" as const, priority: 0.6 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
