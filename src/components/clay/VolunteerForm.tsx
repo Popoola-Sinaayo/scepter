@@ -36,6 +36,7 @@ export function VolunteerForm() {
         eyebrow="Volunteer registration received"
         title={`Thank you for your willingness to serve at ${clay.title}`}
         reference={state.reference}
+        audience="volunteer"
       >
         <p>
           Your volunteer registration has been received. Our volunteer coordination team will review

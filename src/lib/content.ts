@@ -299,32 +299,6 @@ export const founder = {
   quote: "Formation precedes function. The altar precedes the throne.",
 };
 
-export type Gathering = {
-  name: string;
-  description: string;
-  schedule: string;
-  location: string;
-};
-
-// TODO: replace with real gatherings and cohorts. Entries with an empty
-// schedule are shown as "Details coming soon".
-export const gatherings: Gathering[] = [
-  {
-    name: "Formation Cohorts",
-    description:
-      "Structured, small-group journeys through doctrine, spiritual disciplines and leadership, with accountability and community.",
-    schedule: "",
-    location: "",
-  },
-  {
-    name: "Scepter Gatherings",
-    description:
-      "Times of worship, teaching and prayer where the community gathers around the Word and the Presence.",
-    schedule: "",
-    location: "",
-  },
-];
-
 export type Teaching = {
   title: string;
   series?: string;

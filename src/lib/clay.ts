@@ -6,9 +6,14 @@ export const clay = {
   // Empty values are hidden.
   dates: "November 28th, 2026" as string,
   venue: "Solution Arena, 156 Ikorodu Road, Onipanu, Lagos" as string,
-  // WhatsApp community for closer updates, shown after registering. Empty hides it.
-  whatsappUrl: "https://chat.whatsapp.com/G5bQgpqA6DUJERwYUZdNCV?mode=gi_t" as string,
+  // WhatsApp communities offered after registering, one per form. Empty hides it.
+  whatsappUrls: {
+    attendee: "https://chat.whatsapp.com/G5bQgpqA6DUJERwYUZdNCV?mode=gi_t" as string,
+    volunteer: "https://chat.whatsapp.com/BsWRe9hgPO63tUSDooyT6w?mode=gi_t" as string,
+  },
 } as const;
+
+export type RegistrationAudience = keyof typeof clay.whatsappUrls;
 
 export const yesNo = ["Yes", "No"] as const;
 export const yesNoDepends = ["Yes", "No", "Depends"] as const;

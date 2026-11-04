@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { Button } from "@/components/Button";
 import { CTABand } from "@/components/CTABand";
 import { Container } from "@/components/Container";
 import { DimensionCard } from "@/components/DimensionCard";
@@ -10,7 +8,6 @@ import {
   dimensions,
   formationDefinition,
   formationIsNot,
-  gatherings,
   images,
   spheres,
   vision,
@@ -21,7 +18,7 @@ import { site } from "@/lib/site";
 export const metadata = createMetadata({
   title: "Formation",
   description:
-    "How The Scepter forms believers: theological, spiritual, leadership and vocational formation for every sphere of life. Join a cohort or gathering.",
+    "How The Scepter forms believers: theological, spiritual, leadership and vocational formation for every sphere of life.",
   path: "/formation",
 });
 
@@ -108,52 +105,6 @@ export default function FormationPage() {
                 </Reveal>
               ))}
             </div>
-          </div>
-        </Container>
-      </section>
-
-      <section id="gatherings" className="scroll-mt-24 py-20 sm:py-28">
-        <Container>
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-            <Reveal className="relative aspect-[3/4] overflow-hidden sm:aspect-[3/2]">
-              <Image
-                src={images.worshipLead.src}
-                alt={images.worshipLead.alt}
-                fill
-                className="object-cover object-top"
-                sizes="(max-width:1024px) 100vw, 50vw"
-              />
-            </Reveal>
-            <Reveal delayMs={120}>
-              <SectionHeading
-                align="left"
-                eyebrow="Gatherings & cohorts"
-                title="Where formation happens"
-                description="Formation requires time, structure and community. These are the rhythms through which we walk together."
-              />
-              <div className="mt-10 space-y-6">
-                {gatherings.map((gathering) => (
-                  <article key={gathering.name} className="border-l-2 border-burgundy pl-5">
-                    <h3 className="font-serif text-2xl font-semibold text-ink">
-                      {gathering.name}
-                    </h3>
-                    <p className="mt-2 text-base leading-7 text-ink/70">
-                      {gathering.description}
-                    </p>
-                    <p className="eyebrow mt-3 text-burgundy">
-                      {gathering.schedule
-                        ? [gathering.schedule, gathering.location].filter(Boolean).join(" · ")
-                        : "Details coming soon"}
-                    </p>
-                  </article>
-                ))}
-              </div>
-              <div className="mt-10">
-                <Button href="/contact?subject=Formation%20cohort%20interest">
-                  Register interest
-                </Button>
-              </div>
-            </Reveal>
           </div>
         </Container>
       </section>

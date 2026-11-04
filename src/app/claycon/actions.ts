@@ -10,6 +10,7 @@ import {
   yesNo,
   yesNoDepends,
   yesNoNotApplicable,
+  type RegistrationAudience,
 } from "@/lib/clay";
 import { isBrevoEmailConfigured, sendBrevoEmail } from "@/lib/brevo";
 import { countries } from "@/lib/countries";
@@ -81,30 +82,48 @@ function eventDetailsText() {
     .join("\n");
 }
 
-const volunteerUrl = `${site.url}/claycon/volunteer`;
 const buttonStyle =
   "display:inline-block;padding:10px 20px;background:#9e2b2b;color:#fdf8ec;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;";
 
-/** WhatsApp community invite (and, for attendees, an invite to volunteer) for confirmation emails. */
-function nextStepsHtml({ inviteToVolunteer }: { inviteToVolunteer: boolean }) {
+/** After one form, invite people to the other one (mirrors RegistrationComplete). */
+const crossInvite = {
+  attendee: {
+    question: `Would you also like to volunteer at ${clay.shortTitle}?`,
+    url: `${site.url}/claycon/volunteer`,
+    label: "Register to volunteer",
+  },
+  volunteer: {
+    question: `Have you registered to attend ${clay.shortTitle}?`,
+    url: `${site.url}/claycon/register`,
+    label: "Register to attend",
+  },
+} as const;
+
+const whatsappPrompt = {
+  attendee: "Would you like to join our WhatsApp community for closer updates about the conference?",
+  volunteer: "Join the volunteers' WhatsApp community for updates and next steps.",
+} as const;
+
+/** The audience's WhatsApp community and the invite to the other form, for confirmation emails. */
+function nextStepsHtml(audience: RegistrationAudience) {
+  const whatsappUrl = clay.whatsappUrls[audience];
+  const invite = crossInvite[audience];
   const blocks = [
-    clay.whatsappUrl
-      ? `<p>Would you like to join our WhatsApp community for closer updates about the conference?</p>
-<p><a href="${escapeHtml(clay.whatsappUrl)}" style="${buttonStyle}">Join on WhatsApp</a></p>`
+    whatsappUrl
+      ? `<p>${whatsappPrompt[audience]}</p>
+<p><a href="${escapeHtml(whatsappUrl)}" style="${buttonStyle}">Join on WhatsApp</a></p>`
       : "",
-    inviteToVolunteer
-      ? `<p>Would you also like to volunteer at ${escapeHtml(clay.shortTitle)}? <a href="${volunteerUrl}" style="color:#9e2b2b;font-weight:bold;">Register to volunteer</a>.</p>`
-      : "",
+    `<p>${escapeHtml(invite.question)} <a href="${invite.url}" style="color:#9e2b2b;font-weight:bold;">${invite.label}</a>.</p>`,
   ].filter(Boolean);
   return blocks.join("\n");
 }
 
-function nextStepsText({ inviteToVolunteer }: { inviteToVolunteer: boolean }) {
+function nextStepsText(audience: RegistrationAudience) {
+  const whatsappUrl = clay.whatsappUrls[audience];
+  const invite = crossInvite[audience];
   return [
-    clay.whatsappUrl
-      ? `Would you like to join our WhatsApp community for closer updates? ${clay.whatsappUrl}`
-      : "",
-    inviteToVolunteer ? `Would you also like to volunteer at ${clay.shortTitle}? ${volunteerUrl}` : "",
+    whatsappUrl ? `${whatsappPrompt[audience]} ${whatsappUrl}` : "",
+    `${invite.question} ${invite.url}`,
   ]
     .filter(Boolean)
     .map((line) => `${line}\n\n`)
@@ -291,10 +310,10 @@ ${eventDetailsHtml()}
 <p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}<br />
 <strong>Attending with children:</strong> ${raw.withChildren}</p>
 <p>Further information about the schedule and attendance arrangements will be communicated to you by email.</p>
-${nextStepsHtml({ inviteToVolunteer: true })}
+${nextStepsHtml("attendee")}
 <p>We look forward to welcoming you!</p>
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
-      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYou have been registered for ${clay.title}.\n\n${eventDetailsText()}\n\nReference: ${reference}\nAttending with children: ${raw.withChildren}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\n${nextStepsText({ inviteToVolunteer: true })}We look forward to welcoming you!\n\n${site.legalName}`,
+      text: `Thank you for registering, ${raw.fullName.split(" ")[0]}.\n\nYou have been registered for ${clay.title}.\n\n${eventDetailsText()}\n\nReference: ${reference}\nAttending with children: ${raw.withChildren}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\n${nextStepsText("attendee")}We look forward to welcoming you!\n\n${site.legalName}`,
     },
   });
 
@@ -420,10 +439,10 @@ export async function registerVolunteer(
 ${eventDetailsHtml()}
 <p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}<br />
 <strong>Preferred department:</strong> ${escapeHtml(raw.department)}</p>
-${nextStepsHtml({ inviteToVolunteer: false })}
+${nextStepsHtml("volunteer")}
 <p>We appreciate your heart to serve and look forward to connecting with you!</p>
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
-      text: `Thank you, ${raw.fullName.split(" ")[0]}.\n\nThank you for your willingness to serve at ${clay.title}.\n\nYour volunteer registration has been received. Our volunteer coordination team will review your preferences, skills and availability and communicate the next steps.\n\n${eventDetailsText()}\n\nReference: ${reference}\nPreferred department: ${raw.department}\n\n${nextStepsText({ inviteToVolunteer: false })}We appreciate your heart to serve and look forward to connecting with you!\n\n${site.legalName}`,
+      text: `Thank you, ${raw.fullName.split(" ")[0]}.\n\nThank you for your willingness to serve at ${clay.title}.\n\nYour volunteer registration has been received. Our volunteer coordination team will review your preferences, skills and availability and communicate the next steps.\n\n${eventDetailsText()}\n\nReference: ${reference}\nPreferred department: ${raw.department}\n\n${nextStepsText("volunteer")}We appreciate your heart to serve and look forward to connecting with you!\n\n${site.legalName}`,
     },
   });
 

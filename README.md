@@ -27,7 +27,7 @@ Website for **The Scepter Christian Ministries**, built around the Formation The
 
 ## Editing content
 
-- Ministry copy, founder bio, gatherings and teachings live in `src/lib/content.ts`.
+- Ministry copy, founder bio and teachings live in `src/lib/content.ts`.
 - Contact details and social links live in `src/lib/site.ts`. Empty values are hidden on the site.
 - Search for `TODO` to find placeholders that still need real information.
 - `/contact?subject=...` prefills the enquiry subject (used by "Register interest").

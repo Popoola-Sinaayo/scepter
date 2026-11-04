@@ -29,7 +29,7 @@ export function AttendeeForm() {
         eyebrow="Registration received"
         title={`Thank you for registering for ${clay.title}`}
         reference={state.reference}
-        inviteToVolunteer
+        audience="attendee"
       >
         <p>
           Your registration details have been received. Further information about the schedule and

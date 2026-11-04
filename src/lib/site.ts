@@ -42,7 +42,6 @@ export const quickLinks = [
   { href: "/about", label: "About" },
   { href: "/doctrine", label: "Our doctrine" },
   { href: "/formation", label: "Formation" },
-  { href: "/formation#gatherings", label: "Gatherings" },
   { href: "/teachings", label: "Teachings" },
   { href: "/claycon", label: "CLAY Conference" },
   { href: "/give", label: "Partner with us" },

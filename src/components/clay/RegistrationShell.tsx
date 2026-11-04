@@ -1,24 +1,43 @@
 import type { ReactNode, Ref } from "react";
 import { Button } from "@/components/Button";
-import { clay } from "@/lib/clay";
+import { clay, type RegistrationAudience } from "@/lib/clay";
 import { site } from "@/lib/site";
+
+/** After one form, invite people to the other one. */
+const crossInvite = {
+  attendee: {
+    eyebrow: "Serve with us",
+    body: `Would you also like to volunteer at ${clay.shortTitle}? Register to serve in one of our departments.`,
+    href: "/claycon/volunteer",
+    label: "Register to volunteer",
+  },
+  volunteer: {
+    eyebrow: "Attend the conference",
+    body: `Have you registered to attend ${clay.shortTitle}? Register so we can prepare for you.`,
+    href: "/claycon/register",
+    label: "Register to attend",
+  },
+} as const;
 
 export function RegistrationComplete({
   resultRef,
   eyebrow,
   title,
   reference,
-  inviteToVolunteer = false,
+  audience,
   children,
 }: {
   resultRef: Ref<HTMLDivElement>;
   eyebrow: string;
   title: string;
   reference?: string;
-  /** Shown after attendee registration: offer the volunteer form too. */
-  inviteToVolunteer?: boolean;
+  /** Which form was completed: picks the WhatsApp community and the cross-invite. */
+  audience: RegistrationAudience;
   children: ReactNode;
 }) {
+  const whatsappUrl = clay.whatsappUrls[audience];
+  const invite = crossInvite[audience];
+
   return (
     <div
       ref={resultRef}
@@ -49,34 +68,28 @@ export function RegistrationComplete({
           Your reference: <span className="font-bold tracking-wider text-ink">{reference}</span>
         </p>
       ) : null}
-      {clay.whatsappUrl || inviteToVolunteer ? (
-        <div className="mt-8 grid gap-4 border-t border-ink/10 pt-8 sm:grid-cols-2">
-          {clay.whatsappUrl ? (
-            <div className="flex flex-col bg-paper p-6">
-              <p className="eyebrow text-burgundy">Stay connected</p>
-              <p className="mt-2 flex-1 text-base leading-7 text-ink/75">
-                Would you like to join our WhatsApp community for closer updates about the
-                conference?
-              </p>
-              <Button href={clay.whatsappUrl} className="mt-5 self-start">
-                Join on WhatsApp
-              </Button>
-            </div>
-          ) : null}
-          {inviteToVolunteer ? (
-            <div className="flex flex-col bg-paper p-6">
-              <p className="eyebrow text-burgundy">Serve with us</p>
-              <p className="mt-2 flex-1 text-base leading-7 text-ink/75">
-                Would you also like to volunteer at {clay.shortTitle}? Register to serve in one of
-                our departments.
-              </p>
-              <Button href="/claycon/volunteer" variant="outline" className="mt-5 self-start">
-                Register to volunteer
-              </Button>
-            </div>
-          ) : null}
+      <div className="mt-8 grid gap-4 border-t border-ink/10 pt-8 sm:grid-cols-2">
+        {whatsappUrl ? (
+          <div className="flex flex-col bg-paper p-6">
+            <p className="eyebrow text-burgundy">Stay connected</p>
+            <p className="mt-2 flex-1 text-base leading-7 text-ink/75">
+              {audience === "volunteer"
+                ? "Join the volunteers' WhatsApp community for updates and next steps."
+                : "Would you like to join our WhatsApp community for closer updates about the conference?"}
+            </p>
+            <Button href={whatsappUrl} className="mt-5 self-start">
+              Join on WhatsApp
+            </Button>
+          </div>
+        ) : null}
+        <div className="flex flex-col bg-paper p-6">
+          <p className="eyebrow text-burgundy">{invite.eyebrow}</p>
+          <p className="mt-2 flex-1 text-base leading-7 text-ink/75">{invite.body}</p>
+          <Button href={invite.href} variant="outline" className="mt-5 self-start">
+            {invite.label}
+          </Button>
         </div>
-      ) : null}
+      </div>
       <div className="mt-8">
         <Button href="/claycon" variant="outline">
           Back to CLAY 2026
