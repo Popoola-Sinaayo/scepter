@@ -21,8 +21,8 @@ There is no test suite. To check a change, run lint and the type-check, then try
 src/app/                 App Router pages (all server components)
   layout.tsx             Root layout: Space Grotesk font, Navbar, Footer, site-wide metadata
   page.tsx, about/, doctrine/, formation/, teachings/, give/, contact/
-  claycon/               Conference landing, register/, volunteer/ (old /clay links redirect here)
-  claycon/actions.ts     Server actions registerAttendee / registerVolunteer
+  claycon/               Conference landing, register/, volunteer/, ministers/ (old /clay links redirect here)
+  claycon/actions.ts     Server actions registerAttendee / registerVolunteer / registerMinister
   contact/actions.ts     Server action sendEnquiry (Resend only)
   actions/subscribe.ts   Server action subscribe (footer newsletter → Brevo)
   sitemap.ts, robots.ts  Hand-maintained route list: add new pages here
@@ -57,15 +57,15 @@ All three actions follow the same pattern. Each takes `(prevState, formData)`, r
 
 - **Contact** (`sendEnquiry`): emails the team through Resend with reply-to set to the sender, then sends the sender an acknowledgement. The submitted values come back in the state so the form can refill them.
 - **Subscribe**: upserts the contact into a Brevo list. If that fails, it emails the team through Resend so the signup is not lost.
-- **CLAY** (`registerAttendee`, `registerVolunteer`): zod schema plus manual conditional checks (e.g. `groupName` required when `inGroup === "Yes"`) → build a `SheetRow` whose **keys are the human-readable column headers** → `saveRegistration()`:
-  1. `appendSheetRow("Attendees" | "Volunteers", row)`. If this fails, the full row is emailed to `CONTACT_TO_EMAIL`. The submission counts as failed only if that email also fails.
+- **CLAY** (`registerAttendee`, `registerVolunteer`, `registerMinister`): zod schema plus manual conditional checks (e.g. `groupName` required when `inGroup === "Yes"`) → build a `SheetRow` whose **keys are the human-readable column headers** → `saveRegistration()`:
+  1. `appendSheetRow("Attendees" | "Volunteers" | "Ministers", row)`. If this fails, the full row is emailed to `CONTACT_TO_EMAIL`. The submission counts as failed only if that email also fails.
   2. Sends the registrant a confirmation through `sendEmail()`, which tries Brevo first and falls back to Resend. The confirmation includes a reference such as `CLAY-XXXXXX`.
 
 ### Adding or changing a CLAY question
 
 1. Add the option list to `src/lib/clay.ts` if the field is a choice (`as const` tuples; `zod` enums are built from them).
 2. Add the field to the schema in `src/app/claycon/actions.ts`, the `safeParse` input, and the `row` object (the key becomes a new sheet column). The Apps Script adds missing header columns automatically, so the sheet needs no manual changes.
-3. Add the input to `AttendeeForm.tsx` / `VolunteerForm.tsx` using the primitives in `components/clay/FormFields.tsx`. The primitives are `FormSection`, `TextField`, `TextAreaField`, `SelectField`, `ChoiceField` (radio or checkbox), `ConsentField`, the conditional `Reveal show={…}` wrapper (a different component from `components/Reveal`) and `Honeypot`. Pass `errors={errors.<name>}`. Conditional sections are controlled with local `useState` in the form.
+3. Add the input to `AttendeeForm.tsx` / `VolunteerForm.tsx` / `MinisterForm.tsx` using the primitives in `components/clay/FormFields.tsx`. The primitives are `FormSection`, `TextField`, `TextAreaField`, `SelectField`, `ChoiceField` (radio or checkbox), `ConsentField`, the conditional `Reveal show={…}` wrapper (a different component from `components/Reveal`) and `Honeypot`. Pass `errors={errors.<name>}`. Conditional sections are controlled with local `useState` in the form.
 
 `useRegistrationForm` submits through `onSubmit` + `startTransition`, which stops React 19 from resetting the form after a server error. It also passes `formAction` to `<form action>` so a submit before hydration still POSTs. After a submit it scrolls to the first `[data-invalid]` field, or on success to the result panel. Keep both of these behaviours when you change the forms.
 
@@ -78,4 +78,5 @@ All three actions follow the same pattern. Each takes `(prevState, formData)`, r
 - The installed Next.js is newer than most training data. Read `node_modules/next/dist/docs/` before using framework APIs (see AGENTS.md).
 - Social images: `src/app/opengraph-image.jpg` / `twitter-image.jpg` (file convention) and `ogImage` in `seo.ts` (`/public/og.jpg`) both exist. Check which one wins before changing either.
 - A new page must be added by hand to `sitemap.ts`, and to `navLinks` / `quickLinks` in `site.ts` if it belongs in the navigation.
+- A new sheet tab must also be added to `ALLOWED_SHEETS` in the Apps Script (and redeployed); until then submissions fall back to the team email.
 - The Apps Script stores strings with a leading `'` so phone numbers keep their `+`/`0`. After editing the script, redeploy it as a *new version of the same deployment* so the URL stays the same.

@@ -22,6 +22,7 @@ Website for **The Scepter Christian Ministries**, built around the Formation The
 | `/claycon` | CLAY Conference 2026 — EMERGENCE |
 | `/claycon/register` | Conference attendance registration |
 | `/claycon/volunteer` | Conference volunteer registration |
+| `/claycon/ministers` | Conference ministers' registration |
 
 `/sermons` and `/blog` permanently redirect to `/teachings`.
 
@@ -65,7 +66,7 @@ Footer subscribers are created/updated in Brevo and added to that list. If Brevo
 
 ## CLAY Conference registrations (Google Sheets)
 
-Submissions from `/claycon/register` and `/claycon/volunteer` are saved as rows in a Google Sheet, in the **Attendees** and **Volunteers** tabs. The tabs and header rows are created automatically on the first submission.
+Submissions from `/claycon/register`, `/claycon/volunteer` and `/claycon/ministers` are saved as rows in a Google Sheet, in the **Attendees**, **Volunteers** and **Ministers** tabs. The tabs and header rows are created automatically on the first submission.
 
 1. Create a Google Sheet (e.g. “CLAY 2026 Registrations”) in the ministry's Google account.
 2. Open **Extensions → Apps Script**, delete the sample code, and paste in `google-apps-script/clay-registrations.gs`.

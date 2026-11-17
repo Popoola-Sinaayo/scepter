@@ -12,6 +12,7 @@ const routes = [
   { path: "/claycon", changeFrequency: "weekly" as const, priority: 0.8 },
   { path: "/claycon/register", changeFrequency: "weekly" as const, priority: 0.7 },
   { path: "/claycon/volunteer", changeFrequency: "weekly" as const, priority: 0.6 },
+  { path: "/claycon/ministers", changeFrequency: "weekly" as const, priority: 0.6 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

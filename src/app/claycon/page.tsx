@@ -8,7 +8,7 @@ import { site } from "@/lib/site";
 
 export const metadata = createMetadata({
   title: clay.title,
-  description: `Register to attend or volunteer at ${clay.title}, hosted by ${site.legalName}.`,
+  description: `Register to attend, volunteer or register as a minister at ${clay.title}, hosted by ${site.legalName}.`,
   path: "/claycon",
 });
 
@@ -26,6 +26,13 @@ const paths = [
     title: "Volunteer to serve",
     body: "Give your time, skills and energy to help create a well-organised, welcoming and impactful conference.",
     cta: "Apply to volunteer",
+  },
+  {
+    href: "/claycon/ministers",
+    eyebrow: "Ministers",
+    title: "Ministers' registration",
+    body: "For pastors, ministers, ministry leaders and church workers serving in leadership capacities.",
+    cta: "Register as a minister",
   },
 ] as const;
 
@@ -57,7 +64,7 @@ export default function ClayPage() {
             </dl>
           ) : null}
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {paths.map((path) => (
               <Link
                 key={path.href}

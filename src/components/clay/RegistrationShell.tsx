@@ -3,8 +3,10 @@ import { Button } from "@/components/Button";
 import { clay, type RegistrationAudience } from "@/lib/clay";
 import { site } from "@/lib/site";
 
-/** After one form, invite people to the other one. */
-const crossInvite = {
+type Invite = { eyebrow: string; body: string; href: string; label: string };
+
+/** After one form, invite people to the other one. Ministers are asked about serving in their form. */
+const crossInvite: Record<RegistrationAudience, Invite | null> = {
   attendee: {
     eyebrow: "Serve with us",
     body: `Would you also like to volunteer at ${clay.shortTitle}? Register to serve in one of our departments.`,
@@ -17,7 +19,8 @@ const crossInvite = {
     href: "/claycon/register",
     label: "Register to attend",
   },
-} as const;
+  minister: null,
+};
 
 export function RegistrationComplete({
   resultRef,
@@ -82,13 +85,15 @@ export function RegistrationComplete({
             </Button>
           </div>
         ) : null}
-        <div className="flex flex-col bg-paper p-6">
-          <p className="eyebrow text-burgundy">{invite.eyebrow}</p>
-          <p className="mt-2 flex-1 text-base leading-7 text-ink/75">{invite.body}</p>
-          <Button href={invite.href} variant="outline" className="mt-5 self-start">
-            {invite.label}
-          </Button>
-        </div>
+        {invite ? (
+          <div className="flex flex-col bg-paper p-6">
+            <p className="eyebrow text-burgundy">{invite.eyebrow}</p>
+            <p className="mt-2 flex-1 text-base leading-7 text-ink/75">{invite.body}</p>
+            <Button href={invite.href} variant="outline" className="mt-5 self-start">
+              {invite.label}
+            </Button>
+          </div>
+        ) : null}
       </div>
       <div className="mt-8">
         <Button href="/claycon" variant="outline">
