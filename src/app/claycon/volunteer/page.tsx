@@ -19,9 +19,7 @@ export default function ClayVolunteerPage() {
         eyebrow={`${clay.title} · Volunteers`}
         title="Volunteer to serve."
         description={`Thank you for your interest in serving at ${clay.title}.`}
-        image={images.clayVolunteers.src}
-        imageAlt={images.clayVolunteers.alt}
-        imagePosition="object-[center_35%]"
+        feature={images.clayconPoster}
       />
 
       <section className="py-20 sm:py-28">
