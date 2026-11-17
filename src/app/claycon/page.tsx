@@ -41,9 +41,7 @@ export default function ClayPage() {
         eyebrow={`${clay.name} · Hosted by ${site.legalName}`}
         title={`${clay.theme.charAt(0)}${clay.theme.slice(1).toLowerCase()}.`}
         description={`Welcome to ${clay.title}. We look forward to having you join us for this gathering.`}
-        image={images.communityCover.src}
-        imageAlt={images.communityCover.alt}
-        imagePosition="object-[center_35%]"
+        feature={images.clayconPoster}
       />
 
       <section className="py-20 sm:py-28">

@@ -64,6 +64,12 @@ export const images = {
     src: "/images/ministry/clay-volunteers.jpg",
     alt: "Seven smiling members of The Scepter community taking a group selfie, giving thumbs up",
   },
+  clayconPoster: {
+    src: "/images/ministry/claycon-2026-speakers-poster.jpg",
+    alt: "CLAY Conference poster, theme: Emergence. Host Pastor Precious Alo with Minister Abbey Ojomu and Minister Yinka Okeleye. 28th November 2026, 9am, Solution Arena, 156 Ikorodu Road, Onipanu, Lagos. Register or volunteer at thescepterglobal.org/claycon",
+    width: 1200,
+    height: 1600,
+  },
   brothersDuo: {
     src: "/images/ministry/brothers-duo.jpg",
     alt: "Pastor Precious Alo standing with a member of The Scepter community",

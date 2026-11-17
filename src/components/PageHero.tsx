@@ -10,6 +10,11 @@ type PageHeroProps = {
   imagePosition?: string;
   /** Replaces the visible title; `title` stays as the heading's accessible text. */
   logo?: { src: string; width: number; height: number };
+  /**
+   * Shown uncropped above the text on mobile and beside it from `md` up, e.g. an event poster.
+   * Without `image`, a blurred copy of it fills the background.
+   */
+  feature?: { src: string; alt: string; width: number; height: number };
 };
 
 export function PageHero({
@@ -20,17 +25,20 @@ export function PageHero({
   imageAlt = "",
   imagePosition = "object-center",
   logo,
+  feature,
 }: PageHeroProps) {
+  const backdrop = image ?? feature?.src;
+
   return (
     <section className="relative isolate flex min-h-[380px] items-end overflow-hidden bg-ink sm:min-h-[460px] md:min-h-[540px]">
-      {image ? (
+      {backdrop ? (
         <>
           <Image
-            src={image}
-            alt={imageAlt}
+            src={backdrop}
+            alt={image ? imageAlt : ""}
             fill
             priority
-            className={`hero-media -z-10 object-cover ${imagePosition}`}
+            className={`hero-media -z-10 object-cover ${imagePosition} ${image ? "" : "scale-110 blur-2xl"}`}
             sizes="100vw"
           />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/70 to-ink/30" />
@@ -38,29 +46,44 @@ export function PageHero({
       ) : (
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,var(--burgundy-deep),transparent_60%)]" />
       )}
-      <Container className="pb-14 pt-28 sm:pb-20">
-        <p className="hero-enter hero-enter-delay-1 eyebrow text-cream/75">{eyebrow}</p>
-        {logo ? (
-          <h1 className="hero-enter hero-enter-delay-2 mt-6">
-            <span className="sr-only">{title}</span>
-            <Image
-              src={logo.src}
-              alt=""
-              width={logo.width}
-              height={logo.height}
-              priority
-              className="h-auto w-56 drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:w-64 md:w-80"
-            />
-          </h1>
-        ) : (
-          <h1 className="hero-enter hero-enter-delay-2 mt-4 max-w-3xl font-serif text-5xl font-semibold leading-[1.02] tracking-tight text-cream sm:text-6xl md:text-7xl">
-            {title}
-          </h1>
-        )}
-        {description ? (
-          <p className="hero-enter hero-enter-delay-3 mt-6 max-w-2xl text-base leading-7 text-cream/80 sm:text-lg">
-            {description}
-          </p>
+      <Container
+        className={`pb-14 pt-28 sm:pb-20 ${feature ? "flex flex-col-reverse gap-10 md:flex-row md:items-end md:justify-between md:gap-12" : ""}`}
+      >
+        <div className="min-w-0">
+          <p className="hero-enter hero-enter-delay-1 eyebrow text-cream/75">{eyebrow}</p>
+          {logo ? (
+            <h1 className="hero-enter hero-enter-delay-2 mt-6">
+              <span className="sr-only">{title}</span>
+              <Image
+                src={logo.src}
+                alt=""
+                width={logo.width}
+                height={logo.height}
+                priority
+                className="h-auto w-56 drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:w-64 md:w-80"
+              />
+            </h1>
+          ) : (
+            <h1 className="hero-enter hero-enter-delay-2 mt-4 max-w-3xl font-serif text-5xl font-semibold leading-[1.02] tracking-tight text-cream sm:text-6xl md:text-7xl">
+              {title}
+            </h1>
+          )}
+          {description ? (
+            <p className="hero-enter hero-enter-delay-3 mt-6 max-w-2xl text-base leading-7 text-cream/80 sm:text-lg">
+              {description}
+            </p>
+          ) : null}
+        </div>
+        {feature ? (
+          <Image
+            src={feature.src}
+            alt={feature.alt}
+            width={feature.width}
+            height={feature.height}
+            priority
+            sizes="(min-width: 1024px) 380px, (min-width: 640px) 320px, 85vw"
+            className="hero-enter hero-enter-delay-1 mx-auto w-full max-w-[340px] shrink-0 shadow-2xl ring-1 ring-cream/15 sm:max-w-[320px] md:mx-0 lg:max-w-[380px]"
+          />
         ) : null}
       </Container>
     </section>

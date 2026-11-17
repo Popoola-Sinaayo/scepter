@@ -19,10 +19,7 @@ export default function ClayRegisterPage() {
         eyebrow={`${clay.title} · General attendance`}
         title="Register to attend."
         description={`Welcome to ${clay.title}, hosted by ${site.legalName}. We look forward to having you join us for this gathering.`}
-        image={images.clayRegister.src}
-        imageAlt={images.clayRegister.alt}
-        imagePosition="object-[center_25%]"
-        logo={{ src: "/logos/claycon-logo-light.png", width: 326, height: 210 }}
+        feature={images.clayconPoster}
       />
 
       <section className="py-20 sm:py-28">
