@@ -2,27 +2,12 @@
 
 import { z } from "zod";
 import {
-  accessibilityOptions,
   ageRanges,
-  attendanceReasons,
   clay,
-  communicationMethods,
-  genders,
   hearAboutOptions,
-  inPersonOptions,
-  leadershipScopes,
-  leadershipSizes,
-  ministerDesignations,
-  ministerRegistrationTypes,
-  ministerServingAreas,
-  ministryAreas,
-  ministryGrowthAreas,
-  participationModes,
-  partyTypes,
+  ministerCompanions,
   volunteerDays,
   volunteerDepartments,
-  yearsInMinistry,
-  yearsInPosition,
   yesNo,
   yesNoDepends,
   yesNoNotApplicable,
@@ -473,70 +458,16 @@ ${nextStepsHtml("volunteer")}
 
 /* —— Form 3: Ministers —— */
 
-const delegationType = "Part of a church or ministry delegation";
+const comingAlone = "No one, attending alone";
 
 const ministerSchema = z.object({
-  fullName: z.string().min(2, "Please enter your full name and title.").max(160),
-  preferredName: field.optional(),
-  gender: field.optionalChoice(genders),
-  phone: field.phone,
-  whatsapp: z.string().regex(phonePattern, "Please enter a valid WhatsApp number.").or(z.literal("")),
+  fullName: field.name,
+  title: field.required("Please enter your title, for example Pastor or Bishop.", 80),
+  ministry: field.required("Please enter the name of your church or ministry."),
   email: field.email,
-  country: field.choice(countries, "Please select your country."),
-  city: field.required("Please enter your state and city."),
-  registrationType: field.choice(ministerRegistrationTypes),
-  delegationName: field.optional(),
-  designation: field.choice(ministerDesignations, "Please choose your designation or office."),
-  designationOther: field.optional(),
-  organisation: field.required("Please enter the name of your church, ministry or organisation."),
-  denomination: field.optional(),
-  currentRole: field.required("Please describe your current role and responsibilities.", 2000),
-  yearsInMinistry: field.choice(yearsInMinistry),
-  yearsInPosition: field.optionalChoice(yearsInPosition),
-  leadershipScope: field.choice(leadershipScopes),
-  leadershipSize: field.optionalChoice(leadershipSizes),
-  ministryAreas: field.multi(ministryAreas, "Please select at least one area of ministry."),
-  ministryFocus: field.required("Please describe your ministry's focus, vision or assignment.", 2000),
-  responsibilities: field.required("Please describe the principal responsibilities of your office.", 2000),
-  initiatives: field.optional(2000),
-  growthAreas: field.multi(ministryGrowthAreas),
-  hasWebsite: field.optionalChoice(yesNo),
-  websiteLink: field.optional(300),
-  referenceName: field.optional(),
-  referenceDesignation: field.optional(),
-  referenceContact: field.optional(),
-  officiallyNominated: field.choice(yesNoNotApplicable),
-  nominatedBy: field.optional(),
-  willingToConfirm: field.choice(yesNoNotApplicable),
-  attendanceReasons: field.multi(attendanceReasons, "Please select at least one reason."),
-  hopes: field.required("Please tell us what you hope to receive from the conference.", 2000),
-  themeRelevance: field.optional(2000),
-  subjects: field.optional(2000),
-  futureInfo: field.optionalChoice(yesNo),
-  participation: field.choice(participationModes),
-  servingAreas: field.multi(ministerServingAreas),
-  assignmentDetails: field.optional(2000),
-  receivedCommunication: field.choice(yesNoNotApplicable),
-  communicationDetails: field.optional(2000),
-  coordinationNeeds: field.optional(2000),
-  inPerson: field.choice(inPersonOptions),
-  party: field.choice(partyTypes),
-  partySize: field.optional(),
-  needsDirections: field.choice(yesNo),
-  travelling: field.choice(yesNo),
-  travellingFrom: field.optional(),
-  travelInfo: field.optionalChoice(yesNo),
-  accessibility: field.choice(accessibilityOptions),
-  accessibilityDetails: field.optional(500),
-  protocolRequirement: field.choice(yesNoNotApplicable),
-  protocolDetails: field.optional(2000),
-  arrivalAssistance: field.choice(yesNo),
-  communicationMethod: field.choice(communicationMethods),
-  addressAs: field.optional(),
-  welcomeInfo: field.optional(2000),
-  confirmAccurate: z.literal("yes", { error: "Please confirm to continue." }),
-  understandNoGuarantee: z.literal("yes", { error: "Please confirm to continue." }),
-  consentData: z.literal("yes", { error: "Please give your consent to continue." }),
+  phone: field.phone,
+  companions: field.multi(ministerCompanions, "Please tell us who will be coming with you."),
+  socialHandle: field.optional(),
 });
 
 export async function registerMinister(
@@ -545,144 +476,44 @@ export async function registerMinister(
 ): Promise<RegistrationState> {
   if (text(formData, "clay_hp")) return { status: "success", reference: createReference() };
 
-  const textKeys = Object.keys(ministerSchema.shape).filter(
-    (key) => !["ministryAreas", "growthAreas", "attendanceReasons", "servingAreas"].includes(key),
-  );
   const parsed = ministerSchema.safeParse({
-    ...Object.fromEntries(textKeys.map((key) => [key, text(formData, key)])),
-    ministryAreas: list(formData, "ministryAreas"),
-    growthAreas: list(formData, "growthAreas"),
-    attendanceReasons: list(formData, "attendanceReasons"),
-    servingAreas: list(formData, "servingAreas"),
+    fullName: text(formData, "fullName"),
+    title: text(formData, "title"),
+    ministry: text(formData, "ministry"),
+    email: text(formData, "email"),
+    phone: text(formData, "phone"),
+    companions: list(formData, "companions"),
+    socialHandle: text(formData, "socialHandle"),
   });
 
   const errors: FieldErrors = parsed.success ? {} : z.flattenError(parsed.error).fieldErrors;
   const raw = parsed.success ? parsed.data : null;
 
-  /** Follow-up answers are required only when the question that reveals them applies. */
-  function requireWhen(applies: boolean, key: string, message: string) {
-    const missing = key === "servingAreas" ? list(formData, key).length === 0 : !text(formData, key);
-    if (applies && missing) addError(errors, key, message);
-  }
-  requireWhen(
-    text(formData, "registrationType") === delegationType,
-    "delegationName",
-    "Please enter the name of your delegation.",
-  );
-  requireWhen(text(formData, "designation") === "Other", "designationOther", "Please specify your designation.");
-  requireWhen(
-    text(formData, "officiallyNominated") === "Yes",
-    "nominatedBy",
-    "Please tell us who authorised or nominated you.",
-  );
-  requireWhen(
-    text(formData, "participation") === "Open to serving if invited",
-    "servingAreas",
-    "Please select at least one area.",
-  );
-  requireWhen(
-    text(formData, "participation") === "Already assigned an official role",
-    "assignmentDetails",
-    "Please state the role and who confirmed it.",
-  );
-  requireWhen(
-    text(formData, "receivedCommunication") === "Yes",
-    "communicationDetails",
-    "Please give the conference contact and details.",
-  );
-  requireWhen(
-    text(formData, "travelling") === "Yes",
-    "travellingFrom",
-    "Please tell us where you will be travelling from.",
-  );
-  requireWhen(
-    text(formData, "accessibility") === "Yes",
-    "accessibilityDetails",
-    "Please briefly describe the assistance required.",
-  );
-  requireWhen(
-    text(formData, "protocolRequirement") === "Yes",
-    "protocolDetails",
-    "Please give the details and who is coordinating them.",
-  );
-  const inGroup = Boolean(text(formData, "party")) && text(formData, "party") !== "Alone";
-  const partySize = Number(text(formData, "partySize"));
-  if (inGroup && (!Number.isInteger(partySize) || partySize < 1 || partySize > 1000)) {
-    addError(errors, "partySize", "Please enter roughly how many people are in your party.");
+  const companions = list(formData, "companions");
+  if (companions.includes(comingAlone) && companions.length > 1) {
+    addError(errors, "companions", `Please choose "${comingAlone}" on its own.`);
   }
 
   if (!raw || Object.keys(errors).length > 0) return invalid(errors);
 
   const reference = createReference();
-  const when = (applies: boolean, value: string | number) => (applies ? value : "");
+  const titledName = `${raw.title} ${raw.fullName}`;
+  // Headers match the Ministers tab's existing columns, so no new columns are added.
   const row: SheetRow = {
     Reference: reference,
-    "Full name and title": raw.fullName,
-    "Preferred name": raw.preferredName,
-    Gender: raw.gender,
-    Phone: raw.phone,
-    WhatsApp: raw.whatsapp,
+    "Full name and title": titledName,
+    "Church, ministry or organisation": raw.ministry,
     Email: raw.email,
-    Country: raw.country,
-    "State and city": raw.city,
-    "Registering as": raw.registrationType,
-    "Delegation name": when(raw.registrationType === delegationType, raw.delegationName),
-    "Designation or office": raw.designation,
-    "Other designation": when(raw.designation === "Other", raw.designationOther),
-    "Church, ministry or organisation": raw.organisation,
-    "Denomination or tradition": raw.denomination,
-    "Current role and responsibilities": raw.currentRole,
-    "Years in ministry": raw.yearsInMinistry,
-    "Years in current position": raw.yearsInPosition,
-    "Scope of leadership": raw.leadershipScope,
-    "People or congregations led": raw.leadershipSize,
-    "Areas of ministry": raw.ministryAreas.join(", "),
-    "Ministry focus or vision": raw.ministryFocus,
-    "Principal responsibilities": raw.responsibilities,
-    "Current initiatives": raw.initiatives,
-    "Growth areas": raw.growthAreas.join(", "),
-    "Has website or social page": raw.hasWebsite,
-    "Website or social link": when(raw.hasWebsite === "Yes", raw.websiteLink),
-    "Reference name": raw.referenceName,
-    "Reference designation and ministry": raw.referenceDesignation,
-    "Reference contact": raw.referenceContact,
-    "Officially nominated representative": raw.officiallyNominated,
-    "Nominated by": when(raw.officiallyNominated === "Yes", raw.nominatedBy),
-    "Willing to confirm role if needed": raw.willingToConfirm,
-    "Reasons for attending": raw.attendanceReasons.join(", "),
-    "Hopes to take away": raw.hopes,
-    "Relevance of Emergence theme": raw.themeRelevance,
-    "Subjects to engage with": raw.subjects,
-    "Future Scepter information": raw.futureInfo,
-    Participation: raw.participation,
-    "Areas open to serving": when(raw.participation === "Open to serving if invited", raw.servingAreas.join(", ")),
-    "Official assignment details": when(raw.participation === "Already assigned an official role", raw.assignmentDetails),
-    "Received official communication": raw.receivedCommunication,
-    "Official communication details": when(raw.receivedCommunication === "Yes", raw.communicationDetails),
-    "Coordination needed before event": raw.coordinationNeeds,
-    "Attending in person": raw.inPerson,
-    "Attending with": raw.party,
-    "Party size": when(inGroup, partySize),
-    "Needs directions": raw.needsDirections,
-    "Travelling from outside host city": raw.travelling,
-    "Travelling from": when(raw.travelling === "Yes", raw.travellingFrom),
-    "Travel or accommodation information": raw.travelInfo,
-    "Accessibility requirements": raw.accessibility,
-    "Accessibility details": when(raw.accessibility === "Yes", raw.accessibilityDetails),
-    "Protocol or seating requirement": raw.protocolRequirement,
-    "Protocol details": when(raw.protocolRequirement === "Yes", raw.protocolDetails),
-    "Registration or arrival assistance": raw.arrivalAssistance,
-    "Preferred communication": raw.communicationMethod,
-    "Address as": raw.addressAs,
-    "Welcome information": raw.welcomeInfo,
-    "Declarations confirmed": "Yes",
+    Phone: raw.phone,
+    "Attending with": raw.companions.join(", "),
+    "Website or social link": raw.socialHandle,
   };
 
-  const greeting = escapeHtml(raw.preferredName || raw.fullName);
+  const greeting = escapeHtml(titledName);
   const saved = await saveRegistration({
     sheet: "Ministers",
     row,
-    name: raw.fullName,
+    name: titledName,
     email: raw.email,
     label: "Ministers' registration",
     ack: {
@@ -691,10 +522,11 @@ export async function registerMinister(
       html: `<p>Thank you for registering for <strong>${escapeHtml(clay.title)}</strong>. We appreciate your ministry and your interest in joining us.</p>
 <p>Your information has been received and will be used to coordinate your registration and relevant conference arrangements. Any official assignment or special arrangement will be communicated separately by the organising team.</p>
 ${eventDetailsHtml()}
-<p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}</p>
+<p style="padding:16px;background:#fcf0d6;"><strong>Reference:</strong> ${reference}<br />
+<strong>Coming with:</strong> ${escapeHtml(raw.companions.join(", "))}</p>
 ${nextStepsHtml("minister")}
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
-      text: `Thank you, ${raw.preferredName || raw.fullName}.\n\nThank you for registering for ${clay.title}. We appreciate your ministry and your interest in joining us.\n\nYour information has been received and will be used to coordinate your registration and relevant conference arrangements. Any official assignment or special arrangement will be communicated separately by the organising team.\n\n${eventDetailsText()}\n\nReference: ${reference}\n\n${nextStepsText("minister")}${site.legalName}`,
+      text: `Thank you, ${titledName}.\n\nThank you for registering for ${clay.title}. We appreciate your ministry and your interest in joining us.\n\nYour information has been received and will be used to coordinate your registration and relevant conference arrangements. Any official assignment or special arrangement will be communicated separately by the organising team.\n\n${eventDetailsText()}\n\nReference: ${reference}\nComing with: ${raw.companions.join(", ")}\n\n${nextStepsText("minister")}${site.legalName}`,
     },
   });
 

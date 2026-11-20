@@ -26,14 +26,9 @@ export default function ClayMinistersPage() {
         <Container narrow>
           <div className="mb-14 space-y-4 border-l-2 border-burgundy bg-cream p-7 text-base leading-7 text-ink/75 sm:p-9">
             <p>
-              This form is specifically designed for ministers, pastors, ministry leaders, church
-              workers serving in leadership capacities, and other recognised ministers attending the
-              conference.
-            </p>
-            <p>
-              It will help the organising team understand your ministry background, leadership
-              responsibilities, participation interests, attendance arrangements, and any relevant
-              protocol or accessibility requirements. Please provide accurate information.
+              This short form is for ministers, pastors, ministry leaders and church workers serving in
+              leadership capacities. It helps the organising team prepare to welcome you and anyone
+              coming with you.
             </p>
             <p className="text-sm text-ink/60">
               Completing this form does not automatically guarantee a speaking engagement,
