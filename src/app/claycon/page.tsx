@@ -8,7 +8,7 @@ import { site } from "@/lib/site";
 
 export const metadata = createMetadata({
   title: clay.title,
-  description: `Register to attend, volunteer or register as a minister at ${clay.title}, hosted by ${site.legalName}.`,
+  description: `Register to attend, volunteer, or register as a minister, senior, diaspora guest or child at ${clay.title}, hosted by ${site.legalName}.`,
   path: "/claycon",
 });
 
@@ -33,6 +33,27 @@ const paths = [
     title: "Ministers' registration",
     body: "For pastors, ministers, ministry leaders and church workers serving in leadership capacities.",
     cta: "Register as a minister",
+  },
+  {
+    href: "/claycon/seniors",
+    eyebrow: "Seniors",
+    title: "Seniors' registration",
+    body: "For our older guests, so we can prepare any help or seating you may need.",
+    cta: "Register as a senior",
+  },
+  {
+    href: "/claycon/diaspora",
+    eyebrow: "Diaspora",
+    title: "Diaspora registration",
+    body: "For guests travelling to the conference from outside Nigeria.",
+    cta: "Register from abroad",
+  },
+  {
+    href: "/claycon/children",
+    eyebrow: "Children",
+    title: "Children's registration",
+    body: "Parents and guardians: tell us how many children you are bringing and their ages.",
+    cta: "Register children",
   },
 ] as const;
 

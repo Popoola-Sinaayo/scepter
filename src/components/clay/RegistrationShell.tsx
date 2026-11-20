@@ -20,6 +20,9 @@ const crossInvite: Record<RegistrationAudience, Invite | null> = {
     label: "Register to attend",
   },
   minister: null,
+  senior: null,
+  diaspora: null,
+  child: null,
 };
 
 export function RegistrationComplete({

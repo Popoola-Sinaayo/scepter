@@ -12,6 +12,10 @@ export const clay = {
     volunteer: "https://chat.whatsapp.com/BsWRe9hgPO63tUSDooyT6w?mode=gi_t" as string,
     // TODO: replace with a ministers' group if one is created; uses the attendees' group for now.
     minister: "https://chat.whatsapp.com/G5bQgpqA6DUJERwYUZdNCV?mode=gi_t" as string,
+    // Seniors, diaspora and children's registrations use the attendees' group.
+    senior: "https://chat.whatsapp.com/G5bQgpqA6DUJERwYUZdNCV?mode=gi_t" as string,
+    diaspora: "https://chat.whatsapp.com/G5bQgpqA6DUJERwYUZdNCV?mode=gi_t" as string,
+    child: "https://chat.whatsapp.com/G5bQgpqA6DUJERwYUZdNCV?mode=gi_t" as string,
   },
 } as const;
 
@@ -74,3 +78,18 @@ export const volunteerDays = [
 /* —— Ministers' registration —— */
 
 export const ministerCompanions = ["Spouse", "Children", "Attaché", "No one, attending alone"] as const;
+
+/* —— Seniors' registration —— */
+
+export const seniorAgeRanges = ["60–69", "70–79", "80 and above"] as const;
+
+/* —— Children's registration —— */
+
+/** One count field per range; `key` is the form field name, `label` the sheet column. */
+export const childAgeRanges = [
+  { key: "ages0to2", label: "Under 3" },
+  { key: "ages3to5", label: "3–5" },
+  { key: "ages6to9", label: "6–9" },
+  { key: "ages10to12", label: "10–12" },
+  { key: "ages13to17", label: "13–17" },
+] as const;

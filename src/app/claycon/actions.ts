@@ -3,9 +3,11 @@
 import { z } from "zod";
 import {
   ageRanges,
+  childAgeRanges,
   clay,
   hearAboutOptions,
   ministerCompanions,
+  seniorAgeRanges,
   volunteerDays,
   volunteerDepartments,
   yesNo,
@@ -101,12 +103,18 @@ const crossInvite: Record<RegistrationAudience, Invite | null> = {
     label: "Register to attend",
   },
   minister: null,
+  senior: null,
+  diaspora: null,
+  child: null,
 };
 
 const whatsappPrompt: Record<RegistrationAudience, string> = {
   attendee: "Would you like to join our WhatsApp community for closer updates about the conference?",
   volunteer: "Join the volunteers' WhatsApp community for updates and next steps.",
   minister: "Would you like to join our WhatsApp community for closer updates about the conference?",
+  senior: "Would you like to join our WhatsApp community for closer updates about the conference?",
+  diaspora: "Would you like to join our WhatsApp community for closer updates about the conference?",
+  child: "Would you like to join our WhatsApp community for closer updates about the conference?",
 };
 
 /** The audience's WhatsApp community and the invite to the other form, for confirmation emails. */
@@ -528,6 +536,226 @@ ${nextStepsHtml("minister")}
 <p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
       text: `Thank you, ${titledName}.\n\nThank you for registering for ${clay.title}. We appreciate your ministry and your interest in joining us.\n\nYour information has been received and will be used to coordinate your registration and relevant conference arrangements. Any official assignment or special arrangement will be communicated separately by the organising team.\n\n${eventDetailsText()}\n\nReference: ${reference}\nComing with: ${raw.companions.join(", ")}\n\n${nextStepsText("minister")}${site.legalName}`,
     },
+  });
+
+  return saved ? { status: "success", reference } : unavailable;
+}
+
+/** Confirmation email for the short forms (seniors, diaspora, children). */
+function shortAck({
+  name,
+  intro,
+  reference,
+  summary,
+  audience,
+}: {
+  name: string;
+  intro: string;
+  reference: string;
+  summary: [label: string, value: string][];
+  audience: RegistrationAudience;
+}): SaveInput["ack"] {
+  const firstName = name.split(" ")[0];
+  const lines = [["Reference", reference], ...summary];
+  return {
+    subject: `You're registered for ${clay.title}`,
+    heading: `Thank you, ${escapeHtml(firstName)}.`,
+    html: `<p>${escapeHtml(intro)}</p>
+${eventDetailsHtml()}
+<p style="padding:16px;background:#fcf0d6;">${lines.map(([label, value]) => `<strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}`).join("<br />\n")}</p>
+<p>Further information about the schedule and attendance arrangements will be communicated to you by email.</p>
+${nextStepsHtml(audience)}
+<p>We look forward to welcoming you!</p>
+<p>Grace and peace,<br />${escapeHtml(site.legalName)}</p>`,
+    text: `Thank you, ${firstName}.\n\n${intro}\n\n${eventDetailsText()}\n\n${lines.map(([label, value]) => `${label}: ${value}`).join("\n")}\n\nFurther information about the schedule and attendance arrangements will be communicated to you by email.\n\n${nextStepsText(audience)}We look forward to welcoming you!\n\n${site.legalName}`,
+  };
+}
+
+/* —— Form 4: Seniors —— */
+
+const seniorSchema = z.object({
+  fullName: field.name,
+  email: field.email,
+  phone: field.phone,
+  ageRange: field.choice(seniorAgeRanges, "Please select an age range."),
+  accompanied: field.choice(yesNo),
+  assistance: field.optional(500),
+});
+
+export async function registerSenior(
+  _prevState: RegistrationState,
+  formData: FormData,
+): Promise<RegistrationState> {
+  if (text(formData, "clay_hp")) return { status: "success", reference: createReference() };
+
+  const parsed = seniorSchema.safeParse({
+    fullName: text(formData, "fullName"),
+    email: text(formData, "email"),
+    phone: text(formData, "phone"),
+    ageRange: text(formData, "ageRange"),
+    accompanied: text(formData, "accompanied"),
+    assistance: text(formData, "assistance"),
+  });
+  if (!parsed.success) return invalid(z.flattenError(parsed.error).fieldErrors);
+  const raw = parsed.data;
+
+  const reference = createReference();
+  const row: SheetRow = {
+    Reference: reference,
+    "Full name": raw.fullName,
+    Email: raw.email,
+    Phone: raw.phone,
+    "Age range": raw.ageRange,
+    "Coming with someone": raw.accompanied,
+    "Assistance needed": raw.assistance,
+  };
+
+  const saved = await saveRegistration({
+    sheet: "Seniors",
+    row,
+    name: raw.fullName,
+    email: raw.email,
+    label: "Seniors' registration",
+    ack: shortAck({
+      name: raw.fullName,
+      intro: `You have been registered for ${clay.title}. We are honoured to have you with us.`,
+      reference,
+      summary: [["Coming with someone", raw.accompanied]],
+      audience: "senior",
+    }),
+  });
+
+  return saved ? { status: "success", reference } : unavailable;
+}
+
+/* —— Form 5: Diaspora —— */
+
+const diasporaSchema = z.object({
+  fullName: field.name,
+  email: field.email,
+  phone: field.phone,
+  country: field.choice(countries, "Please select the country you live in."),
+  partySize: z
+    .string()
+    .regex(/^\d{1,2}$/, "Please enter a number.")
+    .refine((value) => Number(value) >= 1 && Number(value) <= 50, "Please enter a number from 1 to 50."),
+});
+
+export async function registerDiaspora(
+  _prevState: RegistrationState,
+  formData: FormData,
+): Promise<RegistrationState> {
+  if (text(formData, "clay_hp")) return { status: "success", reference: createReference() };
+
+  const parsed = diasporaSchema.safeParse({
+    fullName: text(formData, "fullName"),
+    email: text(formData, "email"),
+    phone: text(formData, "phone"),
+    country: text(formData, "country"),
+    partySize: text(formData, "partySize"),
+  });
+  if (!parsed.success) return invalid(z.flattenError(parsed.error).fieldErrors);
+  const raw = parsed.data;
+
+  const reference = createReference();
+  const row: SheetRow = {
+    Reference: reference,
+    "Full name": raw.fullName,
+    Email: raw.email,
+    "Phone (WhatsApp)": raw.phone,
+    "Country of residence": raw.country,
+    "People travelling (including them)": Number(raw.partySize),
+  };
+
+  const saved = await saveRegistration({
+    sheet: "Diaspora",
+    row,
+    name: raw.fullName,
+    email: raw.email,
+    label: "Diaspora registration",
+    ack: shortAck({
+      name: raw.fullName,
+      intro: `You have been registered for ${clay.title}. Thank you for travelling to be with us.`,
+      reference,
+      summary: [
+        ["Travelling from", raw.country],
+        ["People travelling, including you", raw.partySize],
+      ],
+      audience: "diaspora",
+    }),
+  });
+
+  return saved ? { status: "success", reference } : unavailable;
+}
+
+/* —— Form 6: Children (registered by a parent or guardian) —— */
+
+const childCount = z.string().regex(/^\d{0,2}$/, "Please enter a number.");
+
+const childSchema = z.object({
+  fullName: field.name,
+  email: field.email,
+  phone: field.phone,
+  ...Object.fromEntries(childAgeRanges.map(({ key }) => [key, childCount])) as Record<
+    (typeof childAgeRanges)[number]["key"],
+    typeof childCount
+  >,
+  notes: field.optional(500),
+});
+
+export async function registerChildren(
+  _prevState: RegistrationState,
+  formData: FormData,
+): Promise<RegistrationState> {
+  if (text(formData, "clay_hp")) return { status: "success", reference: createReference() };
+
+  const parsed = childSchema.safeParse({
+    fullName: text(formData, "fullName"),
+    email: text(formData, "email"),
+    phone: text(formData, "phone"),
+    ...Object.fromEntries(childAgeRanges.map(({ key }) => [key, text(formData, key)])),
+    notes: text(formData, "notes"),
+  });
+
+  const errors: FieldErrors = parsed.success ? {} : z.flattenError(parsed.error).fieldErrors;
+  const counts = childAgeRanges.map(({ key, label }) => ({ label, count: Number(text(formData, key)) || 0 }));
+  const total = counts.reduce((sum, { count }) => sum + count, 0);
+  if (total === 0) {
+    addError(errors, "childCounts", "Please enter how many children are coming in at least one age range.");
+  }
+
+  if (!parsed.success || Object.keys(errors).length > 0) return invalid(errors);
+  const raw = parsed.data;
+
+  const reference = createReference();
+  const row: SheetRow = {
+    Reference: reference,
+    "Parent or guardian": raw.fullName,
+    Email: raw.email,
+    "Phone (WhatsApp)": raw.phone,
+    "Total children": total,
+    ...Object.fromEntries(counts.map(({ label, count }) => [`Aged ${label}`, count])),
+    "Allergies or special needs": raw.notes,
+  };
+
+  const breakdown = counts
+    .filter(({ count }) => count > 0)
+    .map(({ label, count }) => `${count} aged ${label}`)
+    .join(", ");
+
+  const saved = await saveRegistration({
+    sheet: "Children",
+    row,
+    name: raw.fullName,
+    email: raw.email,
+    label: "Children's registration",
+    ack: shortAck({
+      name: raw.fullName,
+      intro: `Your children have been registered for ${clay.title}. Thank you for helping us prepare for them.`,
+      reference,
+      summary: [["Children", `${total} (${breakdown})`]],
+      audience: "child",
+    }),
   });
 
   return saved ? { status: "success", reference } : unavailable;

@@ -1,4 +1,4 @@
-export type SheetName = "Attendees" | "Volunteers" | "Ministers";
+export type SheetName = "Attendees" | "Volunteers" | "Ministers" | "Seniors" | "Diaspora" | "Children";
 
 export type SheetRow = Record<string, string | number>;
 
